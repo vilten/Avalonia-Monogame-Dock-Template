@@ -1,0 +1,39 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Avalonia_Monogame_Dock_Template.App"
+             Name="Avalonia_Monogame_Dock_Template"
+             RequestedThemeVariant="Dark">
+
+	<!-- Definícia globálnych zdrojov aplikácie -->
+	<Application.Resources>
+		<!-- Povolenie recyklácie ovládacích prvkov pre optimalizáciu výkonu -->
+		<ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
+
+		<!-- Farba pozadia pre regióny, v predvolenom nastavení transparentná -->
+		<Color x:Key="RegionColor">Transparent</Color>
+	</Application.Resources>
+
+	<!-- Definícia štýlov pre aplikáciu -->
+	<Application.Styles>
+
+		<!-- Použitie FluentTheme pre moderný vzhľad UI -->
+		<FluentTheme />
+
+		<!-- Načítanie Fluent témy pre Dock.Avalonia -->
+		<StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
+		<DockFluentTheme />
+
+		<!-- Štýlovanie TextBlock pre zarovnanie na stred -->
+		<Style Selector="TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+
+		<!-- Konfigurácia DockControl pre efektívne spravovanie Dock layoutu -->
+		<Style Selector="DockControl">
+			<Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+		</Style>
+
+	</Application.Styles>
+
+</Application>

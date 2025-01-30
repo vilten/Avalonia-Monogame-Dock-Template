@@ -1,0 +1,122 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Základné nastavenia projektu -->
+	<PropertyGroup>
+		<AssemblyName>MyApp</AssemblyName>
+		<OutputType>WinExe</OutputType>
+		<!-- Výstupný typ: Windows aplikácia -->
+		<TargetFramework>net9.0</TargetFramework>
+		<!-- Použitá verzia .NET -->
+		<Nullable>enable</Nullable>
+		<!-- Zapnutie nullable referenčných typov -->
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<!-- Podpora COM interop -->
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<!-- Manifest aplikácie -->
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<!-- Vypnutie automatickej generácie AssemblyInfo -->
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<!-- Optimalizácia bindingov -->
+		<AvaloniaNameGeneratorBehavior>OnlyProperties</AvaloniaNameGeneratorBehavior>
+		<!-- Optimalizácia generovania mien v XAML -->
+	</PropertyGroup>
+
+	<!-- Nastavenia pre AOT (Ahead-of-Time) kompiláciu pri Release buildoch -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' == 'win-x64'">
+		<PublishAot>true</PublishAot>
+		<!-- Povolenie AOT kompilácie -->
+		<SelfContained>true</SelfContained>
+		<!-- Samostatná aplikácia bez závislostí na .NET runtime -->
+		<StripSymbols>true</StripSymbols>
+		<!-- Odstránenie symbolov pre menšiu veľkosť binárky -->
+	</PropertyGroup>
+
+	<!-- Nastavenia pre optimalizáciu pri Release buildoch -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' == 'win-x64'">
+		<PublishTrimmed>true</PublishTrimmed>
+		<!-- Odstránenie nepotrebných častí frameworku -->
+		<TrimMode>full</TrimMode>
+		<!-- Agresívne odstraňovanie nepoužívaného kódu -->
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<!-- Vypnutie podpory kultúr pre lepší výkon -->
+		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+		<!-- Odstránenie debug symbolov -->
+		<DebuggerSupport>false</DebuggerSupport>
+		<!-- Vypnutie podpory debuggeru -->
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+		<!-- Zakázanie nebezpečnej serializácie -->
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<!-- Zakázanie zastaranej UTF7 kodifikácie -->
+		<EventSourceSupport>false</EventSourceSupport>
+		<!-- Zakázanie EventSource pre menšiu veľkosť aplikácie -->
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+		<!-- Zakázanie runtime metadátového updatera -->
+		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+		<!-- Použitie systémových resource kľúčov -->
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<!-- Podpora iba anglického jazyka -->
+		<IncludeSatelliteDllsProjectOutputGroup>false</IncludeSatelliteDllsProjectOutputGroup>
+		<!-- Nepoužíva satelitné DLL súbory -->
+	</PropertyGroup>
+
+	<!-- Informácie o projekte a licencii -->
+	<PropertyGroup>
+		<VersionPrefix>11.2.3</VersionPrefix>
+		<VersionSuffix></VersionSuffix>
+		<Authors>Viliam Tencer</Authors>
+		<Company>Viliam Tencer</Company>
+		<Description>Avalonia Dock Monogame.</Description>
+		<Copyright>Copyright © Viliam Tencer 2025</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
+		<PackageTags>dock;docking;layout;avalonia;monogame</PackageTags>
+	</PropertyGroup>
+
+	<!-- Nastavenia analýzy a verzie jazyka C# -->
+	<PropertyGroup>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<!-- Použitie najnovších analýzátorov kódu -->
+		<LangVersion>latest</LangVersion>
+		<!-- Použitie najnovšej verzie C# -->
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Assets\Icons\icon-anim.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <AvaloniaResource Include="Assets\Icons\icon-anim.png" />
+	</ItemGroup>
+
+	<!-- Zoznam závislostí (NuGet balíčky) -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Avalonia" Version="11.2.3" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.2.3">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Dock.Avalonia" Version="11.2.0" />
+		<PackageReference Include="Dock.Serializer" Version="11.2.0" />
+		<PackageReference Include="Dock.Model" Version="11.2.0" />
+		<PackageReference Include="Dock.Model.Avalonia" Version="11.2.0" />
+		<PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+		<PackageReference Include="MonoGame.Extended" Version="4.0.4" />
+		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+		<PackageReference Include="ReactiveUI" Version="20.1.63" />
+		<PackageReference Include="YamlDotNet" Version="16.3.0" />
+	</ItemGroup>
+
+	<!-- Priečinky pre organizáciu projektu -->
+	<ItemGroup>
+		<Folder Include="Content\" />
+		<Folder Include="Controls\" />
+		<Folder Include="Monogame\" />
+		<Folder Include="Styles\" />
+		<Folder Include="Themes\" />
+		<Folder Include="ViewModels\" />
+		<Folder Include="Views\" />
+	</ItemGroup>
+
+</Project>

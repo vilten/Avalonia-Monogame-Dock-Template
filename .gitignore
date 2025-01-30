@@ -1,0 +1,79 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.filters
+
+# Avalonia
+bin/
+obj/
+*.pdb
+*.pdbs
+*.log
+*.ipr
+*.iws
+*.iml
+.idea/
+
+# MonoGame
+*.mgcb
+*.mgcontent
+*.xnb
+Thumbs.db
+DesktopGL/bin/
+DesktopGL/obj/
+
+# Build artefacts
+*.dll
+*.exe
+*.app
+*.deb
+*.dmg
+*.pkg
+*.msi
+*.so
+*.dylib
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+nuget.exe
+*.snupkg
+
+# Rider
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+logs/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Resharper
+_ReSharper*
+*.DotSettings.user
+
+# User-specific files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+
+# MonoGame cache and temporary files
+PipelineCache/
+Pipeline/obj/
+
+# Avalonia-specific cache
+*.cache/
+
