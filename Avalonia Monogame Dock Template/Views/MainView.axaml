@@ -1,0 +1,171 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:monogame="clr-namespace:Avalonia_Monogame_Dock_Template.Monogame"
+			 xmlns:views="clr-namespace:Avalonia_Monogame_Dock_Template.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia_Monogame_Dock_Template.MainView"
+             x:CompileBindings="True" x:DataType="DockControl">
+	<Grid RowDefinitions="Auto,Auto,*">
+
+		<Menu Grid.Row="0">
+			<Menu.Styles>
+				<!-- Vlastný štýl pre MenuItem -->
+				<Style Selector="MenuItem">
+					<Setter Property="Padding" Value="5" />
+					<!-- Nastavenie paddingu -->
+				</Style>
+			</Menu.Styles>
+			<MenuItem Header="_File">
+				<MenuItem Header="New" />
+				<MenuItem Header="Open..." />
+				<MenuItem Header="Save" />
+				<Separator />
+				<MenuItem Header="Exit" />
+			</MenuItem>
+			<MenuItem Header="_Edit">
+				<MenuItem Header="Undo" />
+				<MenuItem Header="Redo" />
+				<Separator />
+				<MenuItem Header="Cut" />
+				<MenuItem Header="Copy" />
+				<MenuItem Header="Paste" />
+			</MenuItem>
+			<MenuItem Header="_Layout">
+				<MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
+				<Separator/>
+				<MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
+				<Separator/>
+				<MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
+			</MenuItem>
+			<MenuItem Header="_Help">
+				<MenuItem Header="About" />
+			</MenuItem>
+		</Menu>
+		<WrapPanel Grid.Row="1" Height="32" Orientation="Vertical" Background="#383838">
+			<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aaa</Button>
+			<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aaa</Button>
+			<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aaa</Button>
+		</WrapPanel>
+		<DockControl x:Name="Dock" Grid.Row="2" InitializeLayout="True" InitializeFactory="True">
+			<DockControl.Factory>
+				<Factory />
+			</DockControl.Factory>
+
+			<RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
+
+				<!-- Windows -->
+
+				<ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+
+					<!-- Right Pane -->
+					<ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
+
+						<!-- Right Pane -->
+
+						<ProportionalDock x:Name="LeftPane" Id="LeftPane" Orientation="Horizontal">
+
+
+							<!-- Properties Pane -->
+							<ToolDock x:Name="aPropertiesPane" Id="aPropertiesPane" ActiveDockable="False">
+								<Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
+									<TextBlock Text="{Binding Title}" />
+								</Tool>
+							</ToolDock>
+
+							<ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
+
+							<!-- Documents Pane -->
+
+							<DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1" Proportion="0.9">
+								<DocumentDock.DocumentTemplate>
+									<DocumentTemplate>
+										<StackPanel x:DataType="Document">
+											<TextBlock Text="Title"/>
+											<TextBox Text="{Binding Title}"/>
+											<TextBlock Text="Context"/>
+											<TextBox Text="{Binding Context}"/>
+										</StackPanel>
+									</DocumentTemplate>
+								</DocumentDock.DocumentTemplate>
+								<Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
+									<Grid ColumnDefinitions="Auto *">
+										<Border Grid.Column="0" BorderThickness="1" BorderBrush="#999999">
+											<WrapPanel Orientation="Horizontal" Width="108">
+												<TextBlock Text="Tools" Width="108" Background="Black"/>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<TextBlock Text="Tools" Width="108" Background="Black"/>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<TextBlock Text="Tools" Width="108" Background="Black"/>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+											</WrapPanel>
+										</Border>
+										<views:MonoGameEngine Grid.Column="1" />
+										<!--<TextBlock Grid.Column="1" Text="{Binding Title}"/>
+										<monogame:MonoGameControl Game="{Binding Game}" Grid.Column="1" DefaultBackground="CornflowerBlue" ClipToBounds="True" IsPaused="False"/>-->
+									</Grid>
+								</Document>
+								<Document x:Name="Document2" Id="Document2" Title="App.axaml" x:DataType="Document">
+									<TextBlock Text="{Binding Title}"/>
+								</Document>
+							</DocumentDock>
+
+
+						</ProportionalDock>
+
+						<ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
+
+						<!-- Bottom Pane -->
+
+						<ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="Output">
+							<Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
+								<TextBlock Text="{Binding Title}"/>
+							</Tool>
+							<Tool x:Name="Output" Id="Output" Title="Output" x:DataType="Tool">
+								<TextBlock Text="{Binding Title}"/>
+							</Tool>
+						</ToolDock>
+
+					</ProportionalDock>
+
+					<ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
+
+					<!-- Right Pane -->
+					<ProportionalDock x:Name="ToolLayout" Id="ToolLayout" Orientation="Vertical" Proportion="0.15">
+
+						<ToolDock x:Name="RightTopPane" Id="RightTopPane" Proportion="0.5" Alignment="Top">
+							<Tool x:Name="ItemStyle" Id="ItemStyle" Title="ItemStyle" x:DataType="Tool">
+								<TextBlock Text="{Binding Title}" />
+							</Tool>
+						</ToolDock>
+
+						<ProportionalDockSplitter x:Name="ToolLayoutSplitter" Id="ToolLayoutSplitter" />
+						<ToolDock x:Name="RightBottomPane" Id="RightBottomPane" Proportion="0.5" Alignment="Bottom">
+							<Tool x:Name="Layers" Id="Layers" Title="Layers" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False">
+								<TextBlock Text="{Binding Title}"/>
+							</Tool>
+							<Tool x:Name="Alphas" Id="Alphas" Title="Alphas" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False" Context="False">
+								<TextBlock Text="{Binding Title}"/>
+							</Tool>
+						</ToolDock>
+
+					</ProportionalDock>
+
+
+				</ProportionalDock>
+			</RootDock>
+
+		</DockControl>
+
+	</Grid>
+</UserControl>

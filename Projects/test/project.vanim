@@ -1,0 +1,13 @@
+layers:
+  - imagePath: "content/player.png"
+    position:
+      x: 50
+      y: 100
+    blendMode: "default"
+    # colorize: { r: 255, g: 0, b: 0 }
+    # opacity: 1
+  - imagePath: "content/skate.png"
+    position:
+      x: 200
+      y: 300
+    blendMode: "default"
