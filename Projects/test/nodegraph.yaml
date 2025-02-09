@@ -1,0 +1,10 @@
+nodes:
+  - id: 1
+    name: "Start"
+    connections: [2, 3]
+  - id: 2
+    name: "Process"
+    connections: [3]
+  - id: 3
+    name: "End"
+    connections: []

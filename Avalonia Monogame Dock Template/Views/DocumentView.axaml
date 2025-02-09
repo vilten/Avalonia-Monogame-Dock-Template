@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia_Monogame_Dock_Template.Views.DocumentView">
+	<TextBlock Text="mon" />
+	<!--
+	<DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="False" Proportion="0.9">
+		<Document x:Name="Document1" Id="Document1" Title="Document1" x:DataType="Document">
+			<Grid ColumnDefinitions="Auto *">
+				<Border Grid.Column="0" BorderThickness="1" BorderBrush="#999999">
+					<WrapPanel Orientation="Horizontal" Width="108">
+						<TextBlock Text="Tools" Width="108" Background="Black"/>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<TextBlock Text="Tools" Width="108" Background="Black"/>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<TextBlock Text="Tools" Width="108" Background="Black"/>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+						<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+					</WrapPanel>
+				</Border>-->
+				<!--<views:MonoGameEngine Grid.Column="1" />-->
+				<!--<TextBlock Grid.Column="1" Text="{Binding Title}"/>
+										<monogame:MonoGameControl Game="{Binding Game}" Grid.Column="1" DefaultBackground="CornflowerBlue" ClipToBounds="True" IsPaused="False"/>-->
+	<!--			</Grid>
+		</Document>
+	</DocumentDock>
+	-->
+</UserControl>

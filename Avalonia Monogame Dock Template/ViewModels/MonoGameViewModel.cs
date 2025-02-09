@@ -5,11 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia_Monogame_Dock_Template.Monogame;
 
-namespace Avalonia_Monogame_Dock_Template.Views
+namespace Avalonia_Monogame_Dock_Template.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MonoGameViewModel : ViewModelBase
     {
         private Game1 _game = new Game1();
+
+        public MonoGameViewModel()
+        {
+        }
 
         public Game1 Game
         {

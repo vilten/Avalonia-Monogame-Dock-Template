@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:monogame="clr-namespace:Avalonia_Monogame_Dock_Template.Monogame"
 			 xmlns:views="clr-namespace:Avalonia_Monogame_Dock_Template.Views"
+			 xmlns:viewModels="clr-namespace:Avalonia_Monogame_Dock_Template.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia_Monogame_Dock_Template.MainView"
-             x:CompileBindings="True" x:DataType="DockControl">
-	<Grid RowDefinitions="Auto,Auto,*">
+             x:CompileBindings="True" x:DataType="viewModels:MainViewModel">
+	<Grid RowDefinitions="Auto,Auto,*" x:DataType="viewModels:MainViewModel">
 
 		<Menu Grid.Row="0">
 			<Menu.Styles>
@@ -18,11 +19,11 @@
 				</Style>
 			</Menu.Styles>
 			<MenuItem Header="_File">
-				<MenuItem Header="New" />
-				<MenuItem Header="Open..." />
-				<MenuItem Header="Save" />
+				<MenuItem Header="New Project" Click="FileNewProject_OnClick" />
+				<MenuItem Header="Open Project" Click="FileOpenProject_OnClick" />
+				<MenuItem Header="Save Project" Click="FileSaveProject_OnClick" />
 				<Separator />
-				<MenuItem Header="Exit" />
+				<MenuItem Header="Exit" Click="FileExit_OnClick" />
 			</MenuItem>
 			<MenuItem Header="_Edit">
 				<MenuItem Header="Undo" />
@@ -68,8 +69,8 @@
 
 
 							<!-- Properties Pane -->
-							<ToolDock x:Name="aPropertiesPane" Id="aPropertiesPane" ActiveDockable="False">
-								<Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
+							<ToolDock x:Name="FileBrowserPane" Id="FileBrowserPane" ActiveDockable="False">
+								<Tool x:Name="FileBrowser" Id="FileBrowser" Title="FileBrowser" x:DataType="Tool">
 									<TextBlock Text="{Binding Title}" />
 								</Tool>
 							</ToolDock>
@@ -77,19 +78,8 @@
 							<ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
 
 							<!-- Documents Pane -->
-
-							<DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1" Proportion="0.9">
-								<DocumentDock.DocumentTemplate>
-									<DocumentTemplate>
-										<StackPanel x:DataType="Document">
-											<TextBlock Text="Title"/>
-											<TextBox Text="{Binding Title}"/>
-											<TextBlock Text="Context"/>
-											<TextBox Text="{Binding Context}"/>
-										</StackPanel>
-									</DocumentTemplate>
-								</DocumentDock.DocumentTemplate>
-								<Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
+							<DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="False" Proportion="0.9">
+								<Document x:Name="Document1" Id="Document1" Title="Document1" x:DataType="Document">
 									<Grid ColumnDefinitions="Auto *">
 										<Border Grid.Column="0" BorderThickness="1" BorderBrush="#999999">
 											<WrapPanel Orientation="Horizontal" Width="108">
@@ -113,13 +103,10 @@
 										<views:MonoGameEngine Grid.Column="1" />
 										<!--<TextBlock Grid.Column="1" Text="{Binding Title}"/>
 										<monogame:MonoGameControl Game="{Binding Game}" Grid.Column="1" DefaultBackground="CornflowerBlue" ClipToBounds="True" IsPaused="False"/>-->
-									</Grid>
-								</Document>
-								<Document x:Name="Document2" Id="Document2" Title="App.axaml" x:DataType="Document">
-									<TextBlock Text="{Binding Title}"/>
-								</Document>
-							</DocumentDock>
-
+													</Grid>
+		</Document>
+	</DocumentDock>
+							<!--<views:DocumentView />-->
 
 						</ProportionalDock>
 
@@ -127,12 +114,18 @@
 
 						<!-- Bottom Pane -->
 
-						<ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="Output">
+						<ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="AppNodes">
 							<Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
 								<TextBlock Text="{Binding Title}"/>
 							</Tool>
 							<Tool x:Name="Output" Id="Output" Title="Output" x:DataType="Tool">
-								<TextBlock Text="{Binding Title}"/>
+								<TextBlock
+									
+									x:CompileBindings="True"
+									/>
+							</Tool>
+							<Tool x:Name="AppNodes" Id="AppNodes" Title="AppNodes" x:DataType="Tool" >
+								<views:NodifyMView />
 							</Tool>
 						</ToolDock>
 
@@ -150,12 +143,15 @@
 						</ToolDock>
 
 						<ProportionalDockSplitter x:Name="ToolLayoutSplitter" Id="ToolLayoutSplitter" />
-						<ToolDock x:Name="RightBottomPane" Id="RightBottomPane" Proportion="0.5" Alignment="Bottom">
+						<ToolDock x:Name="RightBottomPane" Id="RightBottomPane" Proportion="0.5" Alignment="Bottom" ActiveDockable="ProjectProperties">
 							<Tool x:Name="Layers" Id="Layers" Title="Layers" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False">
-								<TextBlock Text="{Binding Title}"/>
+								<views:LayersControl />
 							</Tool>
 							<Tool x:Name="Alphas" Id="Alphas" Title="Alphas" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False" Context="False">
 								<TextBlock Text="{Binding Title}"/>
+							</Tool>
+							<Tool x:Name="ProjectProperties" Id="ProjectProperties" Title="Project Properties" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False" Context="False">
+								<views:ProjectPropertiesView  />
 							</Tool>
 						</ToolDock>
 

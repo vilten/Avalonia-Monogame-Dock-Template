@@ -4,13 +4,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
-using Avalonia_Monogame_Dock_Template.Views;
+using Avalonia_Monogame_Dock_Template.ViewModels;
 
 namespace Avalonia_Monogame_Dock_Template;
 
 public class App : Application
 {
-    // Inicializácia aplikácie - naèítanie XAML definície
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -19,23 +18,14 @@ public class App : Application
     // Nastavenie správania aplikácie pri jej inicializácii
     public override void OnFrameworkInitializationCompleted()
     {
-        // Kontrola, èi aplikácia beží ako desktopová aplikácia
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Nastavenie hlavného okna aplikácie s DataContextom
-            desktopLifetime.MainWindow = new MainWindow()
+            // Vytvoríme a nastavíme hlavné okno cez náš Prism kontajner.
+            desktop.MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(),
+                DataContext = new MonoGameViewModel(),
                 Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://MyApp/Assets/Icons/icon-anim.png")))
             };
-        }
-
-        // Kontrola, èi aplikácia beží ako single-view aplikácia (napr. pre mobilné zariadenia)
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleLifetime)
-        {
-            // Nastavenie hlavného zobrazenia aplikácie s DataContextom
-            singleLifetime.MainView = new MainView()
-            { DataContext = new MainViewModel() };
         }
 
         // Zavolanie základnej implementácie po inicializácii

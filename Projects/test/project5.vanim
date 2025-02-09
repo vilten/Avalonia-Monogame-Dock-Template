@@ -1,0 +1,29 @@
+name: untitled
+createdAt: 2025-02-09T00:59:24.0000000
+lastModified: 2025-02-09T01:19:00.8065990Z
+version: 1.0.0
+author: Unknown
+description: Project description...
+settings:
+  theme: dark
+layers:
+- id: 9e211307-eb4a-4c13-9687-c0c7f0f139ee
+  name: Unknown layear
+  properties: {}
+  polygons: []
+- id: dc46f7e0-8c1f-4074-a5f6-8c48982add5e
+  name: Vrstva 2
+  properties: {}
+  polygons: []
+- id: 75268f62-8749-452d-bcf2-20da3c5a72c1
+  name: Vrstva 5
+  properties: {}
+  polygons: []
+- id: cff822cf-746e-4ba8-ad08-cc400e31e6c2
+  name: Vrstva 3
+  properties: {}
+  polygons: []
+- id: 08a58d2c-2c5a-4f99-a175-84eb211337cb
+  name: Vrstva 4
+  properties: {}
+  polygons: []
