@@ -1,19 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Avalonia.Controls.Shapes;
+using Avalonia_Monogame_Dock_Template.Events.Project;
+using Avalonia_Monogame_Dock_Template.Events;
+using Avalonia_Monogame_Dock_Template.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using System;
 
 namespace Avalonia_Monogame_Dock_Template.Monogame;
 
 public class Game1 : Game
 {
+    private readonly IProjectService _projectService;
     public GraphicsDeviceManager _graphics;
     private AvaloniaGameRenderer _avaloniaRenderer;
     private Point _previousResolution;
     private SpriteBatch _spriteBatch;
-
+    
     public static Game1 Instance { get; private set; }
     public AppEngine AppEngine { get => _appEngine; }
 
@@ -25,20 +31,20 @@ public class Game1 : Game
     public EngineMode EngineMode { get => _engineMode; set => _engineMode = value; }
 
     private List<Vector2> _points = new List<Vector2>();
+    private Models.ProjectData currentProject;
 
-    public Game1()
+    public Game1(IProjectService projectService)
     {
         Debug.WriteLine("Monogame.Constructor");
 
         Instance = this;
+        this._projectService = projectService;
+        GlobalMessageBus.Instance.Listen<EventProjectLoaded>().Subscribe(evt =>
+        {
+            currentProject = this._projectService.CurrentProject;
+        });
 
         _graphics = new GraphicsDeviceManager(this);
-        //{
-        //    PreferredBackBufferWidth = 1920,  // Šírka okna
-        //    PreferredBackBufferHeight = 500, // Výška okna
-        //    IsFullScreen = false,              // Fullscreen režim
-        //    HardwareModeSwitch = true,
-        //};
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
@@ -53,6 +59,8 @@ public class Game1 : Game
         _avaloniaRenderer.Resolution = _previousResolution;
         _graphics.PreferredBackBufferHeight = _previousResolution.Y;
         _graphics.PreferredBackBufferWidth = _previousResolution.X;
+        currentProject = _projectService.CurrentProject;
+
         base.Initialize();
         _points.Add(new Vector2(0, 0));
 
@@ -113,7 +121,13 @@ public class Game1 : Game
         foreach (Vector2 point in _points)
         {
             //_spriteBatch.DrawCircle(new CircleF(point, 4), 8, Color.White, 1);
-            _spriteBatch.DrawRectangle(new RectangleF(point - new Vector2(2,2), new SizeF(6,6)), Color.White, 1);
+            //_spriteBatch.DrawRectangle(new RectangleF(point - new Vector2(2,2), new SizeF(6,6)), Color.White, 1);
+            List<Vector2> vector2s = new List<Vector2>();
+            vector2s.Add(new Vector2(0,0));
+            vector2s.Add(new Vector2(0,10));
+            vector2s.Add(new Vector2(10,10));
+            MonoGame.Extended.Shapes.Polygon polygon = new MonoGame.Extended.Shapes.Polygon(vector2s);
+            _spriteBatch.DrawPolygon(point, polygon, Color.Blue,1,1);
         }
         _spriteBatch.End();
 
