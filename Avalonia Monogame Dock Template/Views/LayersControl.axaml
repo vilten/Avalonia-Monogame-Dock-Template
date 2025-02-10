@@ -8,15 +8,21 @@
 			 x:DataType="viewModels:LayersViewModel"
              x:Class="Avalonia_Monogame_Dock_Template.Views.LayersControl">
 	<Grid RowDefinitions="*,48">
-		<ListBox Grid.Row="0" x:Name="LayersListBox"
-				 ItemsSource="{Binding Layers}"
-				 SelectedItem="{Binding SelectedLayer, Mode=TwoWay}">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Name}" HorizontalAlignment="Left" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+		<Border Grid.Row="0" BorderThickness="1" BorderBrush="#888888" Margin="5">
+			<ListBox x:Name="LayersListBox"
+					 ItemsSource="{Binding Layers}"
+					 SelectedItem="{Binding SelectedLayer, Mode=TwoWay}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<WrapPanel FlowDirection="LeftToRight" Height="18">
+							<Button Content="{iconPacks:BoxIcons RegularShow,Width=10,Height=10}" Padding="4" Margin="0,0,5,0" />
+							<Button Content="{iconPacks:BoxIcons RegularCamera,Width=10,Height=10}" Padding="4" Margin="0,0,5,0" />
+							<TextBlock Text="{Binding Name}" HorizontalAlignment="Left" FontSize="14" Padding="0" />
+						</WrapPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</Border>
 		<!-- Tlačidlá pre operácie s vrstvami -->
 		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
 			<Button Content="{iconPacks:BoxIcons RegularLayerPlus,Width=16,Height=16}" Click="AddLayer_OnClick" Margin="5"/>

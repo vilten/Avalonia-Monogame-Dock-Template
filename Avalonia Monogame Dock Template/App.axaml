@@ -34,9 +34,13 @@
 		<Style Selector="DockControl">
 			<Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
 		</Style>
+		<Style Selector="Button">
+			<Setter Property="Cursor" Value="Hand"/>
+		</Style>
 
 		<StyleInclude Source="avares://NodifyM.Avalonia/Styles/ControlStyles.axaml"></StyleInclude>
 		<StyleInclude Source="avares://IconPacks.Avalonia.BoxIcons/BoxIcons.axaml" />
+		<StyleInclude Source="avares://IconPacks.Avalonia.BootstrapIcons/BootstrapIcons.axaml" />
 	</Application.Styles>
 
 </Application>

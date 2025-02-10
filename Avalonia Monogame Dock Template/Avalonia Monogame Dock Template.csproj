@@ -89,7 +89,7 @@
 	<!-- Zoznam závislostí (NuGet balíčky) -->
 	<ItemGroup>
 		<PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
-		<PackageReference Include="IconPacks.Avalonia.BoxIcons" Version="1.0.0" />
+		<PackageReference Include="IconPacks.Avalonia" Version="1.0.0" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<PackageReference Include="Avalonia" Version="11.2.3" />
 		<PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
@@ -116,6 +116,9 @@
 	<ItemGroup>
 		<Folder Include="Content\" />
 		<Folder Include="Controls\" />
+		<Folder Include="Monogame\Engine\Content\" />
+		<Folder Include="Monogame\Engine\Draw\" />
+		<Folder Include="Monogame\Engine\Update\" />
 		<Folder Include="Styles\" />
 		<Folder Include="Themes\" />
 	</ItemGroup>

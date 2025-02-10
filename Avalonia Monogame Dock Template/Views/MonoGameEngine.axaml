@@ -10,6 +10,7 @@
              d:DesignHeight="450"
              x:Class="Avalonia_Monogame_Dock_Template.Views.MonoGameEngine"
              x:CompileBindings="True"
+			 PointerExited="UserControl_PointerLeave"
              x:DataType="viewModels:MonoGameViewModel">
 
 	<Design.DataContext>

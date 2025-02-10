@@ -21,7 +21,12 @@ namespace Avalonia_Monogame_Dock_Template.Views
             this.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
             this.AddHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
             this.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+            ViewModel.Game.OnPointerMoved(new Avalonia.Point(-1, -1));
+        }
 
+        private void UserControl_PointerLeave(object? sender, PointerEventArgs e)
+        {
+            ViewModel.Game.OnPointerMoved(new Avalonia.Point(-1, -1));
         }
 
         private void OnPointerMoved(object sender, PointerEventArgs e)

@@ -2,7 +2,8 @@
 {
     public enum EngineMode
     {
-        edit = 0,
-        animation = 1
+        create = 0,
+        edit = 1,
+        animation = 2
     }
 }
