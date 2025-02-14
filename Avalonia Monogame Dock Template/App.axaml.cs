@@ -24,7 +24,7 @@ public class App : Application
             desktop.MainWindow = new MainWindow()
             {
                 DataContext = new MonoGameViewModel(),
-                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://MyApp/Assets/Icons/icon-anim.png")))
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://ToonFlick/Assets/Icons/icon-anim.png")))
             };
         }
 

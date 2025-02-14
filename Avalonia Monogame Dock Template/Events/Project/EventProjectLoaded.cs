@@ -7,4 +7,6 @@ using System.Threading.Tasks;
 namespace Avalonia_Monogame_Dock_Template.Events.Project
 {
     public class EventProjectLoaded { }
+    public class EventEngineModeChanged { }
+    public class EventLayersUpdated { }
 }

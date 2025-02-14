@@ -20,22 +20,22 @@ public partial class LayersControl : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    private async void AddLayer_OnClick(object? sender, RoutedEventArgs e)
+    private void AddLayer_OnClick(object? sender, RoutedEventArgs e)
     {
         _viewModel.AddLayer();
     }
 
-    private async void RemoveLayer_OnClick(object? sender, RoutedEventArgs e)
+    private void RemoveLayer_OnClick(object? sender, RoutedEventArgs e)
     {
         _viewModel.RemoveLayer();
     }
 
-    private async void MoveUpLayer_OnClick(object? sender, RoutedEventArgs e)
+    private void MoveUpLayer_OnClick(object? sender, RoutedEventArgs e)
     {
         _viewModel.MoveLayerUp();
     }
 
-    private async void MoveDownLayer_OnClick(object? sender, RoutedEventArgs e)
+    private void MoveDownLayer_OnClick(object? sender, RoutedEventArgs e)
     {
         _viewModel.MoveLayerDown();
     }

@@ -14,9 +14,24 @@
 					 SelectedItem="{Binding SelectedLayer, Mode=TwoWay}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<WrapPanel FlowDirection="LeftToRight" Height="18">
-							<Button Content="{iconPacks:BoxIcons RegularShow,Width=10,Height=10}" Padding="4" Margin="0,0,5,0" />
-							<Button Content="{iconPacks:BoxIcons RegularCamera,Width=10,Height=10}" Padding="4" Margin="0,0,5,0" />
+						<WrapPanel
+							Opacity="{Binding ViewportVisible, Converter={StaticResource BooleanToBrushConverter}}"
+							FlowDirection="LeftToRight"
+							Height="18">
+							<Button
+								Content="{iconPacks:BoxIcons RegularShow,Width=10,Height=10}"
+								Command="{Binding ToggleViewportVisible}"
+								Background="Transparent"
+								Opacity="{Binding ViewportVisible, Converter={StaticResource BooleanToBrushConverter}}"
+								Padding="4"
+								Margin="0,0,0,0" />
+							<Button
+								Content="{iconPacks:BoxIcons RegularCamera,Width=10,Height=10}"
+								Command="{Binding ToggleRenderVisible}"
+								Background="Transparent"
+								Opacity="{Binding RenderVisible, Converter={StaticResource BooleanToBrushConverter}}"
+								Padding="4"
+								Margin="0,0,5,0" />
 							<TextBlock Text="{Binding Name}" HorizontalAlignment="Left" FontSize="14" Padding="0" />
 						</WrapPanel>
 					</DataTemplate>
@@ -25,10 +40,10 @@
 		</Border>
 		<!-- Tlačidlá pre operácie s vrstvami -->
 		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-			<Button Content="{iconPacks:BoxIcons RegularLayerPlus,Width=16,Height=16}" Click="AddLayer_OnClick" Margin="5"/>
-			<Button Content="{iconPacks:BoxIcons RegularLayerMinus,Width=16,Height=16}" Click="RemoveLayer_OnClick" Margin="5"/>
-			<Button Content="{iconPacks:BoxIcons RegularUpArrowAlt,Width=16,Height=16}" Click="MoveUpLayer_OnClick" Margin="5"/>
-			<Button Content="{iconPacks:BoxIcons RegularDownArrowAlt,Width=16,Height=16}" Click="MoveDownLayer_OnClick" Margin="5"/>
+			<Button Content="{iconPacks:BoxIcons RegularLayerPlus,Width=16,Height=16}" ToolTip.Tip="New layer" Click="AddLayer_OnClick" Margin="5"/>
+			<Button Content="{iconPacks:BoxIcons RegularLayerMinus,Width=16,Height=16}" ToolTip.Tip="Delete layer" Click="RemoveLayer_OnClick" Margin="5"/>
+			<Button Content="{iconPacks:BoxIcons RegularUpArrowAlt,Width=16,Height=16}" ToolTip.Tip="Move up layer" Click="MoveUpLayer_OnClick" Margin="5"/>
+			<Button Content="{iconPacks:BoxIcons RegularDownArrowAlt,Width=16,Height=16}" ToolTip.Tip="Move down layer" Click="MoveDownLayer_OnClick" Margin="5"/>
 		</StackPanel>
 	</Grid>
 </UserControl>

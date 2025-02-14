@@ -12,6 +12,8 @@ using Avalonia_Monogame_Dock_Template.Services;
 using Splat;
 using Avalonia_Monogame_Dock_Template.Events.Project;
 using Avalonia_Monogame_Dock_Template.Events;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace Avalonia_Monogame_Dock_Template.ViewModels
 {
@@ -22,24 +24,33 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
         public IProjectService ProjectService { get; set; }
 
         private Layer _selectedLayer;
-        public Layer SelectedLayer
+        public Layer? SelectedLayer
         {
             get => _selectedLayer;
-            set => this.RaiseAndSetIfChanged(ref _selectedLayer, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedLayer, value);
+                if (ProjectService != null && value != null)
+                    ProjectService.selectLayer(value.Id);
+            }
         }
 
         public LayersViewModel()
         {
 
             ProjectService = Locator.Current.GetService<IProjectService>() ?? throw new InvalidOperationException("IProjectService not registered");
-            if (ProjectService.CurrentProject != null)
-                Layers = new ObservableCollection<Models.Layer>(ProjectService.CurrentProject.Layers);
-            else
-                Layers = new ObservableCollection<Models.Layer>();
+            Layers = new ObservableCollection<Models.Layer>(ProjectService.getCurrentProjectOrCreateNew().Layers);
 
+            GlobalMessageBus.Instance.Listen<EventLayersUpdated>().Subscribe(evt =>
+            {
+                RefreshLayers();
+            });
             GlobalMessageBus.Instance.Listen<EventProjectLoaded>().Subscribe(evt =>
             {
                 RefreshLayers();
+                SelectedLayer = null;
+                SelectedLayer = ProjectService.getCurrentProjectOrCreateNew().Layers[0];
+                ProjectService.selectLayer(SelectedLayer.Id);
             });
         }
 
@@ -48,11 +59,12 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
             Layers.Clear();
             try
             {
-                foreach (var item in ProjectService.CurrentProject.Layers)
+                foreach (var item in ProjectService.getCurrentProjectOrCreateNew().Layers)
                 {
                     Layers.Add(item);
                 }
-            } catch { }
+            }
+            catch { }
         }
 
         public void AddLayer()
@@ -62,11 +74,10 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
             var index = 0;
             if (SelectedLayer != null)
                 index = Layers.IndexOf(SelectedLayer);
-            ProjectService.CurrentProject.Layers.Insert(index, newLayer);
+            ProjectService.getCurrentProjectOrCreateNew().Layers.Insert(index, newLayer);
             RefreshLayers();
-            //if (ProjectService.CurrentProject == null)
-            //    ProjectService.CurrentProject.Layers.Add(newLayer);
             SelectedLayer = newLayer;
+            ProjectService.selectLayer(SelectedLayer.Id);
         }
 
         public void RemoveLayer()
@@ -74,7 +85,7 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
             if (SelectedLayer != null)
             {
                 int index = Layers.IndexOf(SelectedLayer);
-                ProjectService.CurrentProject.Layers.RemoveAt(index);
+                ProjectService.getCurrentProjectOrCreateNew().Layers.RemoveAt(index);
                 RefreshLayers();
                 if (Layers.Count > 0)
                 {
@@ -82,6 +93,7 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
                         index = Layers.Count - 1;
                     SelectedLayer = null;
                     SelectedLayer = Layers[index];
+                    ProjectService.selectLayer(SelectedLayer.Id);
                 }
             }
         }
@@ -93,12 +105,11 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
                 int index = Layers.IndexOf(SelectedLayer);
                 if (index > 0)
                 {
-                    ProjectService.CurrentProject.Layers.Move(index, index - 1);
+                    ProjectService.getCurrentProjectOrCreateNew().Layers.Move(index, index - 1);
                     RefreshLayers();
-                    //if (ProjectService.CurrentProject == null)
-                    //    ProjectService.CurrentProject.Layers.Move(index, index - 1);
                     SelectedLayer = null;
                     SelectedLayer = Layers[index - 1];
+                    ProjectService.selectLayer(SelectedLayer.Id);
                 }
             }
         }
@@ -111,14 +122,18 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
                 if (index < Layers.Count - 1)
                 {
                     Layers.Move(index, index + 1);
-                    ProjectService.CurrentProject.Layers.Move(index, index + 1);
+                    ProjectService.getCurrentProjectOrCreateNew().Layers.Move(index, index + 1);
                     RefreshLayers();
-                    //if (ProjectService.CurrentProject == null)
-                    //    ProjectService.CurrentProject.Layers.Move(index, index + 1);
                     SelectedLayer = null;
                     SelectedLayer = Layers[index + 1];
+                    ProjectService.selectLayer(SelectedLayer.Id);
                 }
             }
+        }
+
+        public void HideLayer(Layer layer)
+        {
+
         }
     }
 }

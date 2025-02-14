@@ -2,7 +2,7 @@
 
 	<!-- Základné nastavenia projektu -->
 	<PropertyGroup>
-		<AssemblyName>MyApp</AssemblyName>
+		<AssemblyName>ToonFlick</AssemblyName>
 		<OutputType>WinExe</OutputType>
 		<!-- Výstupný typ: Windows aplikácia -->
 		<TargetFramework>net9.0</TargetFramework>
@@ -115,7 +115,6 @@
 	<!-- Priečinky pre organizáciu projektu -->
 	<ItemGroup>
 		<Folder Include="Content\" />
-		<Folder Include="Controls\" />
 		<Folder Include="Monogame\Engine\Content\" />
 		<Folder Include="Monogame\Engine\Draw\" />
 		<Folder Include="Monogame\Engine\Update\" />

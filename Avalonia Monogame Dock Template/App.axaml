@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Avalonia_Monogame_Dock_Template.App"
              Name="Avalonia_Monogame_Dock_Template"
+			 xmlns:others="clr-namespace:Avalonia_Monogame_Dock_Template.Monogame.Others"
 			 xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
              RequestedThemeVariant="Dark">
 
@@ -12,6 +13,7 @@
 
 		<!-- Farba pozadia pre regióny, v predvolenom nastavení transparentná -->
 		<Color x:Key="RegionColor">Transparent</Color>
+		<others:BooleanToBrushConverter x:Key="BooleanToBrushConverter"/>
 	</Application.Resources>
 
 	<!-- Definícia štýlov pre aplikáciu -->
@@ -41,6 +43,7 @@
 		<StyleInclude Source="avares://NodifyM.Avalonia/Styles/ControlStyles.axaml"></StyleInclude>
 		<StyleInclude Source="avares://IconPacks.Avalonia.BoxIcons/BoxIcons.axaml" />
 		<StyleInclude Source="avares://IconPacks.Avalonia.BootstrapIcons/BootstrapIcons.axaml" />
+		<StyleInclude Source="avares://IconPacks.Avalonia.PhosphorIcons/PhosphorIcons.axaml" />
 	</Application.Styles>
 
 </Application>

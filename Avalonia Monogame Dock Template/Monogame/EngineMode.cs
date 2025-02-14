@@ -2,8 +2,11 @@
 {
     public enum EngineMode
     {
-        create = 0,
-        edit = 1,
-        animation = 2
+        createPoints = 0,
+        createPolygons = 1,
+        animation = 2,
+        selectPoints = 3,
+        all = -1,
+        transformPoints = 4,
     }
 }

@@ -90,23 +90,7 @@
 								<Document x:Name="Document1" Id="Document1" Title="Document1" x:DataType="Document">
 									<Grid ColumnDefinitions="Auto *">
 										<Border Grid.Column="0" BorderThickness="1" BorderBrush="#999999">
-											<WrapPanel Orientation="Horizontal" Width="108">
-												<TextBlock Text="Tools" Width="108" Background="Black"/>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<TextBlock Text="Tools" Width="108" Background="Black"/>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<TextBlock Text="Tools" Width="108" Background="Black"/>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-												<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
-											</WrapPanel>
+												<views:RightToolsPanel />
 										</Border>
 										<views:MonoGameEngine Grid.Column="1" />
 										<!--<TextBlock Grid.Column="1" Text="{Binding Title}"/>

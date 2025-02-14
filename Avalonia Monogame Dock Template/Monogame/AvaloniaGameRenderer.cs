@@ -8,7 +8,7 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
     {
         private Microsoft.Xna.Framework.Point _virtualResolution;
         private Microsoft.Xna.Framework.Point _resolution;
-        private Microsoft.Xna.Framework.Vector2 _scale;
+        // private Microsoft.Xna.Framework.Vector2 _scale;
         private GraphicsDevice _device;
         private RenderTarget2D? _renderTarget;
         private RenderTargetBinding[] _previousRenderTargets;

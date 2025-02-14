@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -17,6 +17,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Core;
 using Dock.Serializer;
+using Microsoft.Xna.Framework.Input;
 using Splat;
 
 namespace Avalonia_Monogame_Dock_Template;
@@ -33,7 +34,6 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-
         ViewModel = new MainViewModel();
         DataContext = ViewModel;
 
@@ -221,20 +221,20 @@ public partial class MainView : UserControl
 
         var file = result.FirstOrDefault();
 
-        if (file is not null)
+        try
         {
-            try
+            if (file != null)
             {
                 await ProjectService.LoadProjectAsync(file.TryGetLocalPath());
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
         }
     }
 
-    private async void FileNewProject_OnClick(object? sender, RoutedEventArgs e)
+    private void FileNewProject_OnClick(object? sender, RoutedEventArgs e)
     {
         ProjectService.NewProject("untitled");
     }
@@ -258,17 +258,17 @@ public partial class MainView : UserControl
                 ShowOverwritePrompt = true
             });
 
-            if (file is not null)
+            try
             {
-                try
+                if (file != null && file.TryGetLocalPath() != null)
                 {
                     ProjectService.CurrentFilePath = file.TryGetLocalPath().ToString();
                     await ProjectService.SaveProjectAsync();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
         else
@@ -277,7 +277,7 @@ public partial class MainView : UserControl
         }
     }
 
-    public async void FileExit_OnClick(object? sender, RoutedEventArgs e)
+    public void FileExit_OnClick(object? sender, RoutedEventArgs e)
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {

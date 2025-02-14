@@ -7,16 +7,11 @@ using System.Threading;
 
 namespace Avalonia_Monogame_Dock_Template.Monogame;
 
-class TcpCommandListener
+class TcpCommandListener(int port)
 {
-    private readonly int port;
-    private TcpListener listener;
+    private readonly int port = port;
+    private TcpListener? listener;
     private bool isRunning;
-
-    public TcpCommandListener(int port)
-    {
-        this.port = port;
-    }
 
     public void Start()
     {

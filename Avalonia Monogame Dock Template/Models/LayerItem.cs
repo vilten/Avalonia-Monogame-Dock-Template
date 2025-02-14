@@ -7,16 +7,16 @@ using Microsoft.Xna.Framework;
 
 namespace Avalonia_Monogame_Dock_Template.Models
 {
-    public class Polygon
+    public class LayerItem
     {
         // Unikátny identifikátor polygonu
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        // Zoznam vrcholov polygonu; použijeme Avalonia.Point pre reprezentáciu bodov
-        public List<Point> Vertices { get; set; } = new List<Point>();
+        public LayerItemType LayerItemType { get; set; } = LayerItemType.Point;
 
-        // Zoznam alfa hodnôt; napr. môže predstavovať priehľadnosť jednotlivých častí polygonu.
-        // Počet hodnôt môže zodpovedať počtu vrcholov alebo inej logike, ktorú si implementujete.
-        public List<double> Alphas { get; set; } = new List<double>();
+        // Zoznam vrcholov polygonu; použijeme Avalonia.Point pre reprezentáciu bodov
+        public List<Verticle> Verticles { get; set; } = new List<Verticle>();
+
+        // opacity
     }
 }

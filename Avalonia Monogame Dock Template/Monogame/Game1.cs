@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
+using Avalonia_Monogame_Dock_Template.Models;
+using SkiaSharp;
 
 namespace Avalonia_Monogame_Dock_Template.Monogame;
 
@@ -18,20 +20,23 @@ public class Game1 : Game
     public GraphicsDeviceManager _graphics;
     private AvaloniaGameRenderer _avaloniaRenderer;
     private Point _previousResolution;
-    private SpriteBatch _spriteBatch;
+    public SpriteBatch _spriteBatch;
     
     public static Game1 Instance { get; private set; }
     public AppEngine AppEngine { get => _appEngine; }
 
     private bool _mouseLeftPressed = false;
     private bool _mouseLeftPressedPrevious = false;
-    private Vector2 _mousePosition;
+    public Vector2 _mousePosition;
     private AppEngine _appEngine;
-    private EngineMode _engineMode = EngineMode.edit;
-    public EngineMode EngineMode { get => _engineMode; set => _engineMode = value; }
+    private EngineMode _engineMode = EngineMode.selectPoints;
+    public EngineMode EngineMode { get => _engineMode; set {
+            _engineMode = value;
+            LoadContent();
+        } }
 
-    private List<Vector2> _points = new List<Vector2>();
     private Models.ProjectData currentProject;
+    public Models.ProjectData CurrentProject { get; set; }
 
     public Game1(IProjectService projectService)
     {
@@ -41,12 +46,16 @@ public class Game1 : Game
         this._projectService = projectService;
         GlobalMessageBus.Instance.Listen<EventProjectLoaded>().Subscribe(evt =>
         {
-            currentProject = this._projectService.CurrentProject;
+            currentProject = _projectService.getCurrentProjectOrCreateNew();
+            CurrentProject = currentProject;
         });
 
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        // disable 60fps
+         IsFixedTimeStep = false;
+         _graphics.SynchronizeWithVerticalRetrace = false;
 
         // engine init
         _appEngine = new AppEngine(this);
@@ -59,10 +68,10 @@ public class Game1 : Game
         _avaloniaRenderer.Resolution = _previousResolution;
         _graphics.PreferredBackBufferHeight = _previousResolution.Y;
         _graphics.PreferredBackBufferWidth = _previousResolution.X;
-        currentProject = _projectService.CurrentProject;
+        currentProject = _projectService.getCurrentProjectOrCreateNew();
+        CurrentProject = currentProject;
 
         base.Initialize();
-        _points.Add(new Vector2(0, 0));
 
         AppEngine.Initialize();
     }
@@ -71,7 +80,6 @@ public class Game1 : Game
     {
         if (_previousResolution != GraphicsDevice.Viewport.Bounds.Size)
         {
-            Debug.WriteLine($"Monogame.UpdateAvalonia {GraphicsDevice.Viewport.Bounds.Width}");
             _previousResolution = GraphicsDevice.Viewport.Bounds.Size;
             _avaloniaRenderer.Resolution = _previousResolution;
             _graphics.PreferredBackBufferHeight = _previousResolution.Y;
@@ -84,8 +92,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Debug.WriteLine("Monogame.LoadContent");
-        AppEngine.LoadContent(_spriteBatch);
         base.LoadContent();
+        AppEngine.LoadContent(_spriteBatch);
     }
 
     protected override void UnloadContent()
@@ -99,16 +107,9 @@ public class Game1 : Game
     {
 
         UpdateAvalonia();
-
+        base.Update(gameTime);
         AppEngine.Update(gameTime);
 
-        if (_mouseLeftPressed != _mouseLeftPressedPrevious)
-        {
-            _points.Add(_mousePosition);
-        }
-        _mouseLeftPressedPrevious = _mouseLeftPressed;
-
-        base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
@@ -116,22 +117,11 @@ public class Game1 : Game
         _avaloniaRenderer.Begin();
         _graphics.GraphicsDevice.Clear(Color.SlateGray);
 
-        AppEngine.Draw(gameTime);
         _spriteBatch.Begin(SpriteSortMode.Immediate);
-        foreach (Vector2 point in _points)
-        {
-            //_spriteBatch.DrawCircle(new CircleF(point, 4), 8, Color.White, 1);
-            //_spriteBatch.DrawRectangle(new RectangleF(point - new Vector2(2,2), new SizeF(6,6)), Color.White, 1);
-            List<Vector2> vector2s = new List<Vector2>();
-            vector2s.Add(new Vector2(0,0));
-            vector2s.Add(new Vector2(0,10));
-            vector2s.Add(new Vector2(10,10));
-            MonoGame.Extended.Shapes.Polygon polygon = new MonoGame.Extended.Shapes.Polygon(vector2s);
-            _spriteBatch.DrawPolygon(point, polygon, Color.Blue,1,1);
-        }
+        base.Draw(gameTime);
+        AppEngine.Draw(gameTime);
         _spriteBatch.End();
 
-        base.Draw(gameTime);
         _avaloniaRenderer.End();
     }
 
@@ -144,17 +134,20 @@ public class Game1 : Game
     public void OnMousePressed()
     {
         _mouseLeftPressed = true;
-        Debug.WriteLine($"pressed {_mousePosition}");
     }
 
     public void OnMouseReleased()
     {
         _mouseLeftPressed = false;
-        Debug.WriteLine($"released {_mousePosition}");
     }
 
     internal void OnPointerMoved(Avalonia.Point point)
     {
         _mousePosition = new Vector2((float)point.X, (float)point.Y);
+    }
+
+    public Layer getSelectedLayer()
+    {
+        return _projectService.getSelectedLayer();
     }
 }

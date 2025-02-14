@@ -20,11 +20,13 @@ namespace Avalonia_Monogame_Dock_Template.ViewModels
         public ProjectFormViewModel()
         {
             _projectService = Locator.Current.GetService<IProjectService>() ?? throw new InvalidOperationException("IProjectService not registered");
-            CurrentProject = _projectService.CurrentProject;
+            _currentProject = _projectService.getCurrentProjectOrCreateNew();
+            CurrentProject = _currentProject;
 
             GlobalMessageBus.Instance.Listen<EventProjectLoaded>().Subscribe(evt =>
             {
-                CurrentProject = _projectService.CurrentProject;
+                _currentProject = _projectService.getCurrentProjectOrCreateNew();
+                CurrentProject = _currentProject;
             });
         }
     }

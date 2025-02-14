@@ -419,7 +419,8 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            _game.OnPointerWheelChanged((float)e.Delta.Y);
+            if (_game != null)
+                _game.OnPointerWheelChanged((float)e.Delta.Y);
             base.OnPointerWheelChanged(e);
         }
 
@@ -626,7 +627,7 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
 
         private void ExtractFrame(GraphicsDevice device, WriteableBitmap? writeAbleBitmap)
         {
-            if (_writableBitmap is null) { return; }
+            if (writeAbleBitmap is null) { return; }
 
             using (ILockedFramebuffer lockedFrameBuffer = writeAbleBitmap.Lock())
             {
