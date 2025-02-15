@@ -10,7 +10,7 @@ using Avalonia_Monogame_Dock_Template.Events;
 using System;
 using IconPacks.Avalonia.PhosphorIcons;
 
-namespace Avalonia_Monogame_Dock_Template.Controls
+namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
 {
     public class TransformableRectangle
     {
@@ -46,17 +46,63 @@ namespace Avalonia_Monogame_Dock_Template.Controls
             UpdateHandles();
         }
 
+        //private void UpdateHandles()
+        //{
+        //    handles[0] = new Rectangle((int)Position.X - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Horný ľavý roh
+        //    handles[1] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Horný pravý roh
+        //    handles[2] = new Rectangle((int)Position.X - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Dolný ľavý roh
+        //    handles[3] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Dolný pravý roh
+        //    handles[4] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Stred
+        //    handles[5] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Top middle
+        //    handles[6] = new Rectangle((int)Position.X - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Left middle
+        //    handles[7] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Right middle
+        //    handles[8] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Bottom middle
+        //}
+
         private void UpdateHandles()
         {
-            handles[0] = new Rectangle((int)Position.X - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Horný ľavý roh
-            handles[1] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Horný pravý roh
-            handles[2] = new Rectangle((int)Position.X - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Dolný ľavý roh
-            handles[3] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Dolný pravý roh
-            handles[4] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Stred
-            handles[5] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)Position.Y - HandleSize / 2, HandleSize, HandleSize); // Top middle
-            handles[6] = new Rectangle((int)Position.X - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Left middle
-            handles[7] = new Rectangle((int)(Position.X + Size.X) - HandleSize / 2, (int)(Position.Y + Size.Y / 2) - HandleSize / 2, HandleSize, HandleSize); // Right middle
-            handles[8] = new Rectangle((int)(Position.X + Size.X / 2) - HandleSize / 2, (int)(Position.Y + Size.Y) - HandleSize / 2, HandleSize, HandleSize); // Bottom middle
+            Vector2 center = new Vector2(Position.X + Size.X / 2, Position.Y + Size.Y / 2);
+
+            Vector2[] handlePositions = new Vector2[]
+            {
+        new Vector2(Position.X, Position.Y),                      // Horný ľavý roh
+        new Vector2(Position.X + Size.X, Position.Y),            // Horný pravý roh
+        new Vector2(Position.X, Position.Y + Size.Y),            // Dolný ľavý roh
+        new Vector2(Position.X + Size.X, Position.Y + Size.Y),   // Dolný pravý roh
+        new Vector2(Position.X + Size.X / 2, Position.Y + Size.Y / 2), // Stred
+        new Vector2(Position.X + Size.X / 2, Position.Y),        // Horný stred
+        new Vector2(Position.X, Position.Y + Size.Y / 2),        // Ľavý stred
+        new Vector2(Position.X + Size.X, Position.Y + Size.Y / 2), // Pravý stred
+        new Vector2(Position.X + Size.X / 2, Position.Y + Size.Y) // Dolný stred
+            };
+
+            for (int i = 0; i < handlePositions.Length; i++)
+            {
+                handlePositions[i] = RotatePoint(handlePositions[i], center, Rotation);
+                handles[i] = new Rectangle(
+                    (int)(handlePositions[i].X - HandleSize / 2),
+                    (int)(handlePositions[i].Y - HandleSize / 2),
+                    HandleSize,
+                    HandleSize
+                );
+            }
+        }
+
+        private Vector2 RotatePoint(Vector2 point, Vector2 center, float angle)
+        {
+            float cos = MathF.Cos(angle);
+            float sin = MathF.Sin(angle);
+
+            // Posun bodu do súradnicového systému stredu
+            float translatedX = point.X - center.X;
+            float translatedY = point.Y - center.Y;
+
+            // Aplikácia rotačnej matice
+            float rotatedX = translatedX * cos - translatedY * sin;
+            float rotatedY = translatedX * sin + translatedY * cos;
+
+            // Vrátenie bodu späť do globálneho súradnicového systému
+            return new Vector2(rotatedX + center.X, rotatedY + center.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -113,7 +159,40 @@ namespace Avalonia_Monogame_Dock_Template.Controls
             }
         }
 
-        private void DrawDashedRectangle(SpriteBatch spriteBatch, Rectangle rect, Color color, float rotation)
+        public void DrawDashedRectangle(SpriteBatch spriteBatch, Rectangle rect, Color color, float rotation)
+        {
+            int boxSize = 1;
+            int gapSize = 5;
+            Vector2 center = new Vector2(rect.X + rect.Width / 2f, rect.Y + rect.Height / 2f);
+            Matrix rotationMatrix = Matrix.CreateRotationZ(rotation);
+
+            void DrawBoxesAlongLine(Vector2 start, Vector2 end)
+            {
+                Vector2 transformedStart = Vector2.Transform(start - center, rotationMatrix) + center;
+                Vector2 transformedEnd = Vector2.Transform(end - center, rotationMatrix) + center;
+                Vector2 direction = transformedEnd - transformedStart;
+                float length = direction.Length();
+                direction.Normalize();
+
+                for (float i = 0; i < length; i += boxSize + gapSize)
+                {
+                    Vector2 position = transformedStart + direction * i;
+                    spriteBatch.Draw(pixel, new Rectangle((int)position.X, (int)position.Y, boxSize, boxSize), color);
+                }
+            }
+
+            Vector2 topLeft = new Vector2(rect.Left, rect.Top);
+            Vector2 topRight = new Vector2(rect.Right, rect.Top);
+            Vector2 bottomLeft = new Vector2(rect.Left, rect.Bottom);
+            Vector2 bottomRight = new Vector2(rect.Right, rect.Bottom);
+
+            DrawBoxesAlongLine(topLeft, topRight);     // Horná hrana
+            DrawBoxesAlongLine(topRight, bottomRight); // Pravá hrana
+            DrawBoxesAlongLine(bottomRight, bottomLeft); // Spodná hrana
+            DrawBoxesAlongLine(bottomLeft, topLeft);   // Ľavá hrana
+        }
+
+        private void DrawDashedRectangleOld(SpriteBatch spriteBatch, Rectangle rect, Color color, float rotation)
         {
             int dashLength = 5;
             int gapLength = 3;
@@ -162,7 +241,7 @@ namespace Avalonia_Monogame_Dock_Template.Controls
             // Detekcia, či hráč klikol na niektorý z uchopovacích bodov
             for (int i = 0; i < handles.Length; i++)
             {
-                if ((handles[i].Contains(mousePos) || Vector2.Distance(mousePos, handles[i].Center.ToVector2()) < 30))
+                if (handles[i].Contains(mousePos) || Vector2.Distance(mousePos, handles[i].Center.ToVector2()) < 30)
                 {
                     // detekcia kurzora
                     if (i == 0)
@@ -300,19 +379,43 @@ namespace Avalonia_Monogame_Dock_Template.Controls
 
                 UpdateHandles();
 
-                if (_selectedVerticles.Count > 0)
+                if (_selectedVerticles.Count > 1)
                 {
                     float scaleX = Size.X / originalRectangle.Size.X;
                     float scaleY = Size.Y / originalRectangle.Size.Y;
+                    Vector2 center = handles[4].Center.ToVector2(); // Stred objektu
 
                     for (int index = 0; index < _selectedVerticles.Count; index++)
                     {
                         Vector2 distance = _originalSelectedVerticles[index] - originalRectangle.Center.ToVector2();
                         distance.X *= scaleX;
                         distance.Y *= scaleY;
-                        _selectedVerticles[index].position = distance + handles[4].Center.ToVector2();
+
+                        // Použitie rotačnej matice na otočenie bodu okolo stredu
+                        float cosAngle = (float)Math.Cos(Rotation);
+                        float sinAngle = (float)Math.Sin(Rotation);
+
+                        Vector2 rotatedDistance = new Vector2(
+                            distance.X * cosAngle - distance.Y * sinAngle,
+                            distance.X * sinAngle + distance.Y * cosAngle
+                        );
+
+                        _selectedVerticles[index].position = rotatedDistance + center;
                     }
                 }
+                //if (_selectedVerticles.Count > 0)
+                //{
+                //    float scaleX = Size.X / originalRectangle.Size.X;
+                //    float scaleY = Size.Y / originalRectangle.Size.Y;
+
+                //    for (int index = 0; index < _selectedVerticles.Count; index++)
+                //    {
+                //        Vector2 distance = _originalSelectedVerticles[index] - originalRectangle.Center.ToVector2();
+                //        distance.X *= scaleX;
+                //        distance.Y *= scaleY;
+                //        _selectedVerticles[index].position = distance + handles[4].Center.ToVector2();
+                //    }
+                //}
             }
             else if (mouseState.LeftButton == ButtonState.Released)
             {

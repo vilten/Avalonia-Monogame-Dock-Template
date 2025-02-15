@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Avalonia_Monogame_Dock_Template.Controls;
 using Avalonia_Monogame_Dock_Template.Events;
 using Avalonia_Monogame_Dock_Template.Models;
 using Avalonia_Monogame_Dock_Template.Models.Wrapper;
@@ -29,6 +28,7 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
             Debug.WriteLine("kuravaaaaaaa");
             pixelTexture = new Texture2D(Instance.GraphicsDevice, 1, 1);
             pixelTexture.SetData(new[] { Color.White });
+            transformRect = null;
         }
 
         void UnloadContent() { }
@@ -59,9 +59,43 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
                 var max = Vector2.Max(Instance._mousePosition, _startSelection);
                 Rectangle selectionRectangle = new Rectangle((int)min.X, (int)min.Y, (int)max.X - (int)min.X, (int)max.Y - (int)min.Y);
 
-                DrawDashedRectangle(selectionRectangle, Color.LightGray);
+                DrawDashedRectangle(Instance._spriteBatch, selectionRectangle, Color.LightGray, 0f);
             }
         }
+
+        public void DrawDashedRectangle(SpriteBatch spriteBatch, Rectangle rect, Color color, float rotation)
+        {
+            int boxSize = 1;
+            int gapSize = 3;
+            Vector2 center = new Vector2(rect.X + rect.Width / 2f, rect.Y + rect.Height / 2f);
+            Matrix rotationMatrix = Matrix.CreateRotationZ(rotation);
+
+            void DrawBoxesAlongLine(Vector2 start, Vector2 end)
+            {
+                Vector2 transformedStart = Vector2.Transform(start - center, rotationMatrix) + center;
+                Vector2 transformedEnd = Vector2.Transform(end - center, rotationMatrix) + center;
+                Vector2 direction = transformedEnd - transformedStart;
+                float length = direction.Length();
+                direction.Normalize();
+
+                for (float i = 0; i < length; i += boxSize + gapSize)
+                {
+                    Vector2 position = transformedStart + direction * i;
+                    spriteBatch.Draw(pixelTexture, new Rectangle((int)position.X, (int)position.Y, boxSize, boxSize), color);
+                }
+            }
+
+            Vector2 topLeft = new Vector2(rect.Left, rect.Top);
+            Vector2 topRight = new Vector2(rect.Right, rect.Top);
+            Vector2 bottomLeft = new Vector2(rect.Left, rect.Bottom);
+            Vector2 bottomRight = new Vector2(rect.Right, rect.Bottom);
+
+            DrawBoxesAlongLine(topLeft, topRight);     // Horná hrana
+            DrawBoxesAlongLine(topRight, bottomRight); // Pravá hrana
+            DrawBoxesAlongLine(bottomRight, bottomLeft); // Spodná hrana
+            DrawBoxesAlongLine(bottomLeft, topLeft);   // Ľavá hrana
+        }
+
 
         private void DrawDashedRectangle(Rectangle rect, Color color)
         {
@@ -228,16 +262,21 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
             var max = Vector2.Max(Instance._mousePosition, _startSelection);
             var altPressed = !keyboardState.IsKeyDown(Keys.LeftAlt) && !keyboardState.IsKeyDown(Keys.RightAlt);
             Rectangle selectionRectangle = new Rectangle((int)min.X, (int)min.Y, (int)max.X - (int)min.X, (int)max.Y - (int)min.Y);
-            foreach (var layerItem in Instance.getSelectedLayer().LayerItems)
-            {
-                foreach (var verticle in layerItem.Verticles)
+            if (selectionRectangle.Size.ToVector2().Length() > 2)
+                foreach (var layerItem in Instance.getSelectedLayer().LayerItems)
                 {
-                    if (selectionRectangle.Contains(verticle.position) && !_selectedVerticles.Contains(verticle) && altPressed)
-                        _selectedVerticles.Add(verticle);
-                    if (selectionRectangle.Contains(verticle.position) && _selectedVerticles.Contains(verticle) && !altPressed)
-                        _selectedVerticles.Remove(verticle);
-                    //transformRect = null;
+                    foreach (var verticle in layerItem.Verticles)
+                    {
+                        if (selectionRectangle.Contains(verticle.position) && !_selectedVerticles.Contains(verticle) && altPressed)
+                            _selectedVerticles.Add(verticle);
+                        if (selectionRectangle.Contains(verticle.position) && _selectedVerticles.Contains(verticle) && !altPressed)
+                            _selectedVerticles.Remove(verticle);
+                        //transformRect = null;
+                    }
                 }
+            else
+            {
+
             }
 
             Debug.WriteLine($"Selected Area: {selectionRectangle}");
