@@ -130,6 +130,14 @@ namespace Avalonia_Monogame_Dock_Template.Services.Plugins
             });
         }
 
+        public string GetYamlString()
+        {
+            if (_currentProject == null)
+                return "";
+            string yamlContent = _serializer.Serialize(_currentProject);
+            return yamlContent;
+        }
+
         private void SaveStateForUndo()
         {
             if (_currentProject != null)

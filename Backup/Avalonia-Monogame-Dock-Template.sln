@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia Monogame Dock Template", "Avalonia Monogame Dock Template\Avalonia Monogame Dock Template.csproj", "{631123C5-5EFC-48B7-B1F1-4083134ADD84}"
 EndProject
@@ -18,8 +18,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2A5BCC49-68A3-4B29-AE6D-38347588D0C9}
 	EndGlobalSection
 EndGlobal

@@ -87,6 +87,7 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
 
         internal void Draw(GameTime gameTime)
         {
+            if (Instance.CurrentProject != null)
             for (int index = Instance.CurrentProject.Layers.Count - 1; -1 < index; index--)
             {
                 var layer = Instance.CurrentProject.Layers[index];

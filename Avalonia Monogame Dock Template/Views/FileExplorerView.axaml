@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:viewModels="clr-namespace:Avalonia_Monogame_Dock_Template.ViewModels"
+			 xmlns:yaml="clr-namespace:Avalonia_Monogame_Dock_Template.Models.Yaml"
+			 xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+			 x:DataType="viewModels:FileExplorerViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia_Monogame_Dock_Template.Views.FileExplorerView">
+		<TreeView ItemsSource="{Binding RootNodes, Mode=TwoWay}">
+			<TreeView.ItemTemplate>
+				<TreeDataTemplate ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal" Margin="0" Height="12">
+						<iconPacks:PackIconPhosphorIcons Kind="{Binding Icon}" Width="12" Height="12" Margin="0,0,5,0"/>
+						<TextBlock Text="{Binding Name}" FontSize="12" Padding="0" Margin="0" />
+					</StackPanel>
+				</TreeDataTemplate>
+					</TreeView.ItemTemplate>
+		</TreeView>
+</UserControl>

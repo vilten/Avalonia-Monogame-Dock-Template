@@ -76,7 +76,7 @@
 							<!-- Properties Pane -->
 							<ToolDock x:Name="FileBrowserPane" Id="FileBrowserPane" ActiveDockable="False">
 								<Tool x:Name="FileBrowser" Id="FileBrowser" Title="FileBrowser" x:DataType="Tool">
-									<TextBlock Text="{Binding Title}" />
+									<views:FileExplorerView />
 								</Tool>
 								<Tool x:Name="ProjectProperties" Id="ProjectProperties" Title="Project Properties" x:DataType="Tool" CanClose="False" CanPin="False" CanFloat="False" Context="False">
 									<views:ProjectPropertiesView  />

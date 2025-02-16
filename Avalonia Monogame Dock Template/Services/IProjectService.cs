@@ -12,5 +12,6 @@ namespace Avalonia_Monogame_Dock_Template.Services
         Task LoadProjectAsync(string? filePath);
         Task SaveProjectAsync();
         void NewProject(string name);
+        string GetYamlString();
     }
 }
