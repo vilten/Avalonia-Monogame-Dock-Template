@@ -25,7 +25,6 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
 
         void LoadContent(SpriteBatch _spriteBatch)
         {
-            Debug.WriteLine("kuravaaaaaaa");
             pixelTexture = new Texture2D(Instance.GraphicsDevice, 1, 1);
             pixelTexture.SetData(new[] { Color.White });
             transformRect = null;
@@ -283,66 +282,3 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
         }
     }
 }
-
-/*
-using System;
-using System.Linq;
-using System.Reflection;
-
-public abstract class EnginePluginAbstract
-{
-    public virtual void Initialize()
-    {
-        Console.WriteLine("Default EnginePluginAbstract Initialize");
-    }
-}
-
-// Príkladové pluginy
-public class MyPlugin1 : EnginePluginAbstract
-{
-    public override void Initialize() => Console.WriteLine("MyPlugin1 initialized");
-}
-
-public class MyPlugin2 : EnginePluginAbstract
-{
-    public override void Initialize() => Console.WriteLine("MyPlugin2 initialized");
-}
-
-public class MyPluginWithoutOverride : EnginePluginAbstract
-{
-    // Táto trieda neprepisuje Initialize()
-}
-
-class Program
-{
-    static void Main()
-    {
-        Type baseType = typeof(EnginePluginAbstract);
-        string methodName = "Initialize"; // Názov metódy, ktorú hľadáme
-
-        // Získame všetky odvodené triedy
-        var pluginTypes = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && baseType.IsAssignableFrom(t))
-            .ToList();
-
-        foreach (var type in pluginTypes)
-        {
-            // Skontrolujeme, či má metódu 'Initialize' override
-            var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-
-            if (method != null) // Override existuje
-            {
-                Console.WriteLine($"Initializing plugin: {type.Name}");
-                var instance = (EnginePluginAbstract)Activator.CreateInstance(type);
-                instance.Initialize();
-            }
-            else
-            {
-                Console.WriteLine($"Skipping {type.Name} (no override of {methodName})");
-            }
-        }
-    }
-}
-
-*/

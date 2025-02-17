@@ -37,5 +37,10 @@ namespace Avalonia_Monogame_Dock_Template.Models.Wrapper
         {
             appEngine.RegisterDrawVerticle(mode, drawVerticle);
         }
+
+        internal void RegisterDrawPolygon(EngineMode mode, Action<GameTime, BezierPolygon> bezierPolygon)
+        {
+            appEngine.RegisterDrawPolygon(mode, bezierPolygon);
+        }
     }
 }

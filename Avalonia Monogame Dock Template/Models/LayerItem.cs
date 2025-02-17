@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 
 namespace Avalonia_Monogame_Dock_Template.Models
 {
@@ -16,6 +12,9 @@ namespace Avalonia_Monogame_Dock_Template.Models
 
         // Zoznam vrcholov polygonu; použijeme Avalonia.Point pre reprezentáciu bodov
         public List<Verticle> Verticles { get; set; } = new List<Verticle>();
+
+        // zoznam polygon
+        public List<BezierPolygon> Polygons { get; set; } = new List<BezierPolygon>();
 
         // opacity
     }

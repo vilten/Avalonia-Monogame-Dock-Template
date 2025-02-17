@@ -23,6 +23,7 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
         private Dictionary<EngineMode, List<Action<GameTime>>> _updateContentCalls { get; set; } = new Dictionary<EngineMode, List<Action<GameTime>>>();
         private Dictionary<EngineMode, List<Action<GameTime>>> _drawContentCalls { get; set; } = new Dictionary<EngineMode, List<Action<GameTime>>>();
         private Dictionary<EngineMode, List<Action<GameTime, Verticle>>> _drawVerticleCalls { get; set; } = new Dictionary<EngineMode, List<Action<GameTime, Verticle>>>();
+        private Dictionary<EngineMode, List<Action<GameTime, BezierPolygon>>> _drawPolygonCalls { get; set; } = new Dictionary<EngineMode, List<Action<GameTime, BezierPolygon>>>();
 
 
         public AppEngine(Game1 instance)
@@ -88,33 +89,48 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
         internal void Draw(GameTime gameTime)
         {
             if (Instance.CurrentProject != null)
-            for (int index = Instance.CurrentProject.Layers.Count - 1; -1 < index; index--)
-            {
-                var layer = Instance.CurrentProject.Layers[index];
-                if (layer.ViewportVisible)
-                    for (int indexItems = 0; layer.LayerItems.Count > indexItems; indexItems++)
-                    {
-                        var layerItem = layer.LayerItems[indexItems];
-                        switch (layerItem.LayerItemType)
+                for (int index = Instance.CurrentProject.Layers.Count - 1; -1 < index; index--)
+                {
+                    var layer = Instance.CurrentProject.Layers[index];
+                    if (layer.ViewportVisible)
+                        for (int indexItems = 0; layer.LayerItems.Count > indexItems; indexItems++)
                         {
-                            case LayerItemType.Point:
-                                for (int i = 0; i < layerItem.Verticles.Count; i++)
-                                {
-                                    if (_drawVerticleCalls.ContainsKey(Instance.EngineMode))
-                                        foreach (var drawVerticle in _drawVerticleCalls[Instance.EngineMode])
-                                        {
-                                            drawVerticle(gameTime, layerItem.Verticles[i]);
-                                        };
-                                    if (_drawVerticleCalls.ContainsKey(EngineMode.all))
-                                        foreach (var drawVerticle in _drawVerticleCalls[EngineMode.all])
-                                        {
-                                            drawVerticle(gameTime, layerItem.Verticles[i]);
-                                        };
-                                }
-                                break;
+                            var layerItem = layer.LayerItems[indexItems];
+                            switch (layerItem.LayerItemType)
+                            {
+                                case LayerItemType.Point:
+                                    for (int i = 0; i < layerItem.Verticles.Count; i++)
+                                    {
+                                        if (_drawVerticleCalls.ContainsKey(Instance.EngineMode))
+                                            foreach (var drawVerticle in _drawVerticleCalls[Instance.EngineMode])
+                                            {
+                                                drawVerticle(gameTime, layerItem.Verticles[i]);
+                                            };
+                                        if (_drawVerticleCalls.ContainsKey(EngineMode.all))
+                                            foreach (var drawVerticle in _drawVerticleCalls[EngineMode.all])
+                                            {
+                                                drawVerticle(gameTime, layerItem.Verticles[i]);
+                                            };
+                                    }
+                                    break;
+                                case LayerItemType.Polygon:
+                                    for (int i = 0; i < layerItem.Polygons.Count; i++)
+                                    {
+                                        if (_drawPolygonCalls.ContainsKey(Instance.EngineMode))
+                                            foreach (var drawPolygon in _drawPolygonCalls[Instance.EngineMode])
+                                            {
+                                                drawPolygon(gameTime, layerItem.Polygons[i]);
+                                            }
+                                        if (_drawPolygonCalls.ContainsKey(EngineMode.all))
+                                            foreach (var drawPolygon in _drawPolygonCalls[Instance.EngineMode])
+                                            {
+                                                drawPolygon(gameTime, layerItem.Polygons[i]);
+                                            }
+                                    }
+                                    break;
+                            }
                         }
-                    }
-            }
+                }
             if (_drawContentCalls.ContainsKey(Instance.EngineMode))
                 foreach (var draw in _drawContentCalls[Instance.EngineMode])
                 {
@@ -176,6 +192,13 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
             if (!_drawVerticleCalls.ContainsKey(mode))
                 _drawVerticleCalls.Add(mode, new List<Action<GameTime, Verticle>>());
             _drawVerticleCalls[mode].Add(drawVerticle);
+        }
+
+        internal void RegisterDrawPolygon(EngineMode mode, Action<GameTime, BezierPolygon> bezierPolygon)
+        {
+            if (!_drawPolygonCalls.ContainsKey(mode))
+                _drawPolygonCalls.Add(mode, new List<Action<GameTime, BezierPolygon>>());
+            _drawPolygonCalls[mode].Add(bezierPolygon);
         }
     }
 }

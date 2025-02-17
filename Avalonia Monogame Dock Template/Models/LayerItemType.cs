@@ -4,5 +4,6 @@
     {
         Point = 0,
         Line = 1,
+        Polygon = 2,
     }
 }
