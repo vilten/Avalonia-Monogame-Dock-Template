@@ -1,0 +1,175 @@
+name: Unknown project auto
+createdAt: 2025-02-14T12:55:02.8502580Z
+lastModified: 2025-02-14T13:04:26.4579645Z
+version: 1.0.0
+author: Unknown
+description: Project description...
+settings:
+  theme: dark
+layers:
+- id: ece3fdc0-e2fc-4a82-8927-711d3c1ddae7
+  name: Unknown layear
+  viewportVisible: true
+  renderVisible: true
+  properties: {}
+  layerItems:
+  - id: 5fd06139-52b2-4bba-b0e0-bcb4335182a0
+    layerItemType: Point
+    verticles:
+    - id: 02cc72aa-4497-49b3-af7a-1de83702ecd0
+      position: 6639969 19345020
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: e5e0aad5-4112-4ca1-9a8d-5a87abe84311
+    layerItemType: Point
+    verticles:
+    - id: e0a5ac6d-193e-4379-8ec3-0b38331cff74
+      position: 6150076 5944353
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: c8a505be-ce57-470a-b0cb-177670a3a9e3
+    layerItemType: Point
+    verticles:
+    - id: eb767e22-045a-4507-a0df-557db25b064e
+      position: 65601984 571955
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 59c58725-022f-49d3-ac30-31350c7089e9
+    layerItemType: Point
+    verticles:
+    - id: 2f7c4d64-e113-4c5f-81a1-4eb7cf9313a8
+      position: 5613634 47613124
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: a0896199-b18a-4ef7-b583-6f2ec438af66
+    layerItemType: Point
+    verticles:
+    - id: e82c1874-f522-4386-8875-754d075fb0bc
+      position: 59770684 5631918
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 24d864ce-a372-483e-942a-35c3f2651227
+    layerItemType: Point
+    verticles:
+    - id: 5f4fc014-7f65-478f-b004-70bf0bebe5b8
+      position: 5941818 46851236
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: c514ab4c-e64c-4094-8c58-e38fceb589b6
+    layerItemType: Point
+    verticles:
+    - id: 5208226c-f674-4771-a130-d4aff2ff6324
+      position: 6898136 31354524
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 5cf6f081-16a0-416d-bfe7-bdb4aeb7d3ee
+    layerItemType: Point
+    verticles:
+    - id: b7021730-bf39-459c-99be-86850c615adb
+      position: 6162767 21388
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 19fa32d5-b553-40bc-8dd4-e89589b9a466
+    layerItemType: Point
+    verticles:
+    - id: e4221522-e0b3-4bf5-85a3-77798cd9ebda
+      position: 5871057 50867680
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 320ad615-66bc-48ae-96b6-86e2f0c005cf
+    layerItemType: Point
+    verticles:
+    - id: 9eb603a4-8b83-4dcd-9317-b51783a57fef
+      position: 318 191
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 0bc5cf30-7c8a-4432-9089-606f9ee70850
+    layerItemType: Point
+    verticles:
+    - id: 75cd96aa-b7c5-4edd-90e6-a5224532d7b4
+      position: 6210345 4250097
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: bf17dc44-fe7e-4b33-9015-b3ec86008c17
+    layerItemType: Point
+    verticles:
+    - id: 5135d4f5-5406-4026-ac90-e0ad6c8a4474
+      position: 356 327
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: cfed94c5-d571-4eed-8461-248bae41cda7
+    layerItemType: Point
+    verticles:
+    - id: 9dde7583-3b71-4e77-93fa-b39a8ecae37e
+      position: 568 217
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: ea796e31-8746-4503-bb60-0ef539f8b2a2
+    layerItemType: Point
+    verticles:
+    - id: 47f598a6-a521-47d0-a9a5-a52ab9f6aec6
+      position: 433 282
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: ea1a8eed-ba02-491e-8818-fa69270e763a
+    layerItemType: Point
+    verticles:
+    - id: 8db3840f-3c80-4dc6-b662-798c30636a7d
+      position: 274 251
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: da433e9f-a4c1-4f1f-bf69-af5e580532a6
+    layerItemType: Point
+    verticles:
+    - id: 25618fb9-8e43-42d0-9cf8-07bf24172cd4
+      position: 317 376
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: a022e2e9-08ee-4108-b7b7-e6c9bb5609c8
+    layerItemType: Point
+    verticles:
+    - id: 6c58555f-754e-4197-90a9-b113b9b9df64
+      position: 492 419
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: c17564ab-7047-4c04-a61a-504925ab993f
+    layerItemType: Point
+    verticles:
+    - id: 2714bc04-9c5b-48e2-a828-4294f3232dd5
+      position: 365 289
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: a3bc8765-863a-4146-9113-7e89c83615ca
+    layerItemType: Point
+    verticles:
+    - id: 261c12e1-30a3-4789-9f97-2359516c2f87
+      position: 380 209
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'
+  - id: 8ffeb38e-1e1f-4400-ba3c-3fa1ce373847
+    layerItemType: Point
+    verticles:
+    - id: 012dd246-9ea9-41cf-9337-a28131d67e06
+      position: 526 187
+      opacity: 1
+      size: 10
+      color: '#FFFFFFFF'

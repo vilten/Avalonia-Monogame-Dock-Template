@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia_Monogame_Dock_Template.Views.RightToolsPanel"
+			 xmlns:viewModels="clr-namespace:Avalonia_Monogame_Dock_Template.ViewModels"
+			 x:DataType="viewModels:RightToolsViewModel"
+			 xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia">
+	<WrapPanel Orientation="Horizontal" Width="108">
+		<TextBlock Text="Tools" Width="108" Background="Black"/>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5" Content="{iconPacks:BoxIcons RegularPencil,Width=12,Height=12}" Background="#758af0" />
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<TextBlock Text="Tools" Width="108" Background="Black"/>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<TextBlock Text="Tools" Width="108" Background="Black"/>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+		<Button FontSize="12" Padding="10 2 10 2" Margin="0 5">aa</Button>
+	</WrapPanel>
+
+</UserControl>

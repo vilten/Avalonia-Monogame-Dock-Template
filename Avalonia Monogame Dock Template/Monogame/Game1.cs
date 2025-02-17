@@ -1,68 +1,79 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Avalonia.Controls.Shapes;
+using Avalonia_Monogame_Dock_Template.Events.Project;
+using Avalonia_Monogame_Dock_Template.Events;
+using Avalonia_Monogame_Dock_Template.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using MonoGame.Extended;
+using System;
+using Avalonia_Monogame_Dock_Template.Models;
+using SkiaSharp;
 
 namespace Avalonia_Monogame_Dock_Template.Monogame;
 
 public class Game1 : Game
 {
-    public string _projectPath = "../../../../Projects/test/";
-    public string _projectFilename = "project.vanim";
+    private readonly IProjectService _projectService;
     public GraphicsDeviceManager _graphics;
     private AvaloniaGameRenderer _avaloniaRenderer;
     private Point _previousResolution;
+    public SpriteBatch _spriteBatch;
+    
     public static Game1 Instance { get; private set; }
+    public AppEngine AppEngine { get => _appEngine; }
 
-    private SpriteBatch _spriteBatch;
-    // Zoznam vrstiev
-    private System.Collections.Generic.List<Layer> _layers;
-    Effect multiplyEffect;
-    // private BasicEffect _effect;
-    TcpCommandListener commandListener;
+    private bool _mouseLeftPressed = false;
+    private bool _mouseLeftPressedPrevious = false;
+    public Vector2 _mousePosition;
+    private AppEngine _appEngine;
+    private EngineMode _engineMode = EngineMode.selectPoints;
+    public EngineMode EngineMode { get => _engineMode; set {
+            _engineMode = value;
+            LoadContent();
+        } }
 
-    private Camera2D _camera;
-    private MouseState _previousMouseState;
-    private SpriteFont _font;
-    private int _fps;
-    private int _frameCounter;
-    private double _elapsedTime;
-    public Game1()
+    private Models.ProjectData currentProject;
+    public Models.ProjectData CurrentProject { get; set; }
+
+    public Game1(IProjectService projectService)
     {
+        Debug.WriteLine("Monogame.Constructor");
+
         Instance = this;
+        this._projectService = projectService;
+        GlobalMessageBus.Instance.Listen<EventProjectLoaded>().Subscribe(evt =>
+        {
+            currentProject = _projectService.getCurrentProjectOrCreateNew();
+            CurrentProject = currentProject;
+        });
 
         _graphics = new GraphicsDeviceManager(this);
-        //{
-        //    PreferredBackBufferWidth = 1920,  // Šírka okna
-        //    PreferredBackBufferHeight = 500, // Výška okna
-        //    IsFullScreen = false,              // Fullscreen režim
-        //    HardwareModeSwitch = true,
-        //};
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        // disable 60fps
+         IsFixedTimeStep = false;
+         _graphics.SynchronizeWithVerticalRetrace = false;
+
+        // engine init
+        _appEngine = new AppEngine(this);
     }
 
     protected override void Initialize()
     {
+        Debug.WriteLine("Monogame.Initialize");
         _avaloniaRenderer = new AvaloniaGameRenderer(GraphicsDevice);
         _avaloniaRenderer.Resolution = _previousResolution;
-
-        // TODO: Add your initialization logic here
-        _layers = LoadLayersFromYaml(_projectPath + _projectFilename);
-        _camera = new Camera2D(GraphicsDevice.Viewport);
-
-        //var udpListener = new UdpPacketListener(5000); // Port 12345
-        //Task.Run(() => udpListener.StartListening());
+        _graphics.PreferredBackBufferHeight = _previousResolution.Y;
+        _graphics.PreferredBackBufferWidth = _previousResolution.X;
+        currentProject = _projectService.getCurrentProjectOrCreateNew();
+        CurrentProject = currentProject;
 
         base.Initialize();
 
-        //base.LoadContent();
-
-        commandListener = new TcpCommandListener(5000);
-        Task.Run(() => commandListener.Start());
+        AppEngine.Initialize();
     }
 
     private void UpdateAvalonia()
@@ -71,137 +82,72 @@ public class Game1 : Game
         {
             _previousResolution = GraphicsDevice.Viewport.Bounds.Size;
             _avaloniaRenderer.Resolution = _previousResolution;
+            _graphics.PreferredBackBufferHeight = _previousResolution.Y;
+            _graphics.PreferredBackBufferWidth = _previousResolution.X;
+            _graphics.ApplyChanges();
         }
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        multiplyEffect = Content.Load<Effect>("shaders/MultiplyEffect");
-        _font = Content.Load<SpriteFont>("Fonts/DefaultFont");
-
-        // Načítanie textúr z disku
-        foreach (var layer in _layers)
-        {
-            if (File.Exists(_projectPath + layer.ImagePath))
-            {
-                using (var stream = File.OpenRead(_projectPath + layer.ImagePath))
-                {
-                    layer.Texture = Texture2D.FromStream(GraphicsDevice, stream);
-                }
-            }
-            else
-            {
-                System.Console.WriteLine($"File not found: {layer.ImagePath}");
-            }
-        }
+        Debug.WriteLine("Monogame.LoadContent");
+        base.LoadContent();
+        AppEngine.LoadContent(_spriteBatch);
     }
 
     protected override void UnloadContent()
     {
-        // Zastav listener pri ukončení hry
-        commandListener.Stop();
+        Debug.WriteLine("Monogame.UnLoadContent");
+        AppEngine.UnloadContent();
         base.UnloadContent();
     }
 
     protected override void Update(GameTime gameTime)
     {
+
         UpdateAvalonia();
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-        var mouseState = Mouse.GetState();
-
-        // Skontroluj, či je stlačené pravé tlačidlo myši
-        if (mouseState.RightButton == ButtonState.Pressed)
-        {
-            var deltaX = mouseState.X - _previousMouseState.X;
-            var deltaY = mouseState.Y - _previousMouseState.Y;
-
-            // Posuň kameru podľa pohybu myši
-            _camera.Move(new Vector2(-deltaX / _camera.Zoom, -deltaY / _camera.Zoom));
-        }
-
-        // Zoomovanie pomocou kolieska myši
-        int scrollDelta = mouseState.ScrollWheelValue - _previousMouseState.ScrollWheelValue;
-        if (scrollDelta != 0)
-        {
-            float newZoom = _camera.Zoom + (scrollDelta > 0 ? 0.1f : -0.1f);
-            _camera.Zoom = newZoom;
-        }
-
-        _previousMouseState = mouseState;
-
         base.Update(gameTime);
+        AppEngine.Update(gameTime);
+
     }
 
     protected override void Draw(GameTime gameTime)
     {
         _avaloniaRenderer.Begin();
-        //GraphicsDevice.Clear(Color.Aqua);
         _graphics.GraphicsDevice.Clear(Color.SlateGray);
 
-
-
-        foreach (var layer in _layers)
-        {
-            var blendState = BlendModeFactory.GetBlendState(layer.BlendMode);
-            // var colorWithOpacity = new Color(layer.Colorize.R, layer.Colorize.G, layer.Colorize.B, (byte)(255 * layer.Opacity));
-
-            _spriteBatch.Begin(SpriteSortMode.Immediate, blendState: blendState, effect: multiplyEffect, transformMatrix: _camera.GetViewMatrix());
-            _spriteBatch.Draw(layer.Texture, layer.Position, Color.White);
-            _spriteBatch.End();
-        }
-
-        // Počítanie FPS
-        _elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-        _frameCounter++;
-
-        if (_elapsedTime >= 1.0)
-        {
-            _fps = _frameCounter;
-            _frameCounter = 0;
-            _elapsedTime = 0;
-        }
-
-        // Vykreslenie textu FPS
-        _spriteBatch.Begin();
-        _spriteBatch.DrawString(_font, $"FPS: {_fps}", new Vector2(20, 10), Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        _spriteBatch.Begin(SpriteSortMode.Immediate);
+        base.Draw(gameTime);
+        AppEngine.Draw(gameTime);
         _spriteBatch.End();
 
-        base.Draw(gameTime);
         _avaloniaRenderer.End();
-    }
-
-    private System.Collections.Generic.List<Layer> LoadLayersFromYaml(string filePath)
-    {
-        // Načítanie YAML súboru
-        var yamlText = File.ReadAllText(filePath);
-        var deserializer = new DeserializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-
-        var layers = deserializer.Deserialize<LayerContainer>(yamlText);
-        return layers.Layers;
     }
 
     internal void OnPointerWheelChanged(float y)
     {
-        _camera.Zoom += y > 0 ? 0.1f : -0.1f;
+        var zoomDelta = y > 0 ? 0.1f : -0.1f;
+        //_camera.Zoom += zoomDelta;
     }
 
-    // Trieda pre načítanie YAML údajov
-    public class Layer
+    public void OnMousePressed()
     {
-        public string ImagePath { get; set; }
-        public Vector2 Position { get; set; }
-        public Texture2D Texture { get; set; }
-        public string BlendMode { get; set; }
-        public float Opacity { get; set; } = 1.0f;
-        public Color Colorize { get; set; } = Color.White;
+        _mouseLeftPressed = true;
     }
 
-    public class LayerContainer
+    public void OnMouseReleased()
     {
-        public System.Collections.Generic.List<Layer> Layers { get; set; }
+        _mouseLeftPressed = false;
+    }
+
+    internal void OnPointerMoved(Avalonia.Point point)
+    {
+        _mousePosition = new Vector2((float)point.X, (float)point.Y);
+    }
+
+    public Layer getSelectedLayer()
+    {
+        return _projectService.getSelectedLayer();
     }
 }

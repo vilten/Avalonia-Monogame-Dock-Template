@@ -31,6 +31,16 @@ internal static class StorageService
     };
 
     /// <summary>
+    /// Definuje typ súborov pre výber VANIM súborov (*.vanim).
+    /// </summary>
+    public static FilePickerFileType Vanim { get; } = new("Vanim")
+    {
+        Patterns = new[] { "*.vanim" }, // VANIM súbory
+        AppleUniformTypeIdentifiers = new[] { "public.vanim" }, // Apple UTI pre JSON
+        MimeTypes = new[] { "application/x-yaml" } // MIME typ pre YAML
+    };
+
+    /// <summary>
     /// Získa poskytovateľa úložiska (StorageProvider) na manipuláciu so súbormi.
     /// </summary>
     /// <returns>Vracia <see cref="IStorageProvider"/> alebo <c>null</c>, ak nie je dostupný.</returns>
