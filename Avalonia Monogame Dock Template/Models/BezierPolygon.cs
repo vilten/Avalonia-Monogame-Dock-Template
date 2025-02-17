@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DynamicData;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -12,29 +9,9 @@ namespace Avalonia_Monogame_Dock_Template.Models
 {
     public class BezierPolygon
     {
+        // Unikátny identifikátor polygonu
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public List<BezierCurve> Curves { get; set; } = new List<BezierCurve>();
-
-        public BezierPolygon(List<BezierCurve> curves)
-        {
-            Curves = curves;
-        }
-
-        // Získa všetky body polygónu
-        public List<Vector2> GetPolygonPoints()
-        {
-            List<Vector2> points = new List<Vector2>();
-            foreach (var curve in Curves)
-            {
-                points.AddRange(curve.GetPoints());
-            }
-            return points;
-        }
-
-        // Skontroluje, či je polygón uzavretý
-        public bool IsClosed()
-        {
-            return Curves.Count > 1 && Curves.First().Start == Curves.Last().End;
-        }
 
         // Bounding Box celého polygónu
         public RectangleF GetBoundingBox()
@@ -119,10 +96,25 @@ namespace Avalonia_Monogame_Dock_Template.Models
             return (d1 < 0 && d2 < 0 && d3 < 0) || (d1 > 0 && d2 > 0 && d3 > 0);
         }
 
+        public List<Vector2> GetPoints()
+        {
+            List<Vector2> points = new List<Vector2>();
+            Curves.ForEach(curve => points.AddRange(curve.GetPoints()));
+
+            return points;
+        }
+
+        public void DrawPolygon(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawPolygon(new Vector2(0,0), new MonoGame.Extended.Shapes.Polygon(GetPoints()),Color.AliceBlue);
+        }
+
+
+
         // **Vykreslí vyplnený Bézierov polygón pomocou triangulácie**
         public void DrawFilled(GraphicsDevice graphicsDevice, BasicEffect effect)
         {
-            var points = GetPolygonPoints();
+            var points = GetPoints();
             var indices = Triangulate(points);
             if (indices.Count < 3) return;
 

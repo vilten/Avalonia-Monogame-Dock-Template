@@ -5,6 +5,9 @@ using IconPacks.Avalonia.PhosphorIcons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Shapes;
+using Poly2Tri;
+using System.Linq;
 
 namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
 {
@@ -12,25 +15,80 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
     {
         public override string EnginePluginName => "PolygonPlugin";
         Texture2D pixelTexture;
+        private BasicEffect _basicEffect;
+        private VertexPositionColor[] _polygonVertices;
+        private short[] _indices;
 
         public override void Register(AppEngineWrapper appEngineWrapper)
         {
-            appEngineWrapper.RegisterLoadContent(EngineMode.all, LoadContent);
-            appEngineWrapper.RegisterDrawPolygon(EngineMode.all, DrawPolygon);
-            appEngineWrapper.RegisterDraw(EngineMode.all, Draw);
-            appEngineWrapper.RegisterUnloadContent(EngineMode.all, UnloadContent);
+            appEngineWrapper.RegisterLoadContent(EngineMode.selectPolygons, LoadContent);
+            appEngineWrapper.RegisterDrawPolygon(EngineMode.selectPolygons, DrawPolygon);
+            appEngineWrapper.RegisterDraw(EngineMode.selectPolygons, Draw);
+            appEngineWrapper.RegisterUnloadContent(EngineMode.selectPolygons, UnloadContent);
         }
 
         void LoadContent(SpriteBatch _spriteBatch)
         {
             pixelTexture = new Texture2D(Instance.GraphicsDevice, 1, 1);
             pixelTexture.SetData(new[] { Color.White });
+            _basicEffect = new BasicEffect(Instance.GraphicsDevice)
+            {
+                VertexColorEnabled = true,  // Umožňuje farbu vertexov
+                LightingEnabled = false     // Osvetlenie vypnuté pre jednoduchosť
+            };
+
+            // Nastavenie základných matíc (svetový, pohľadový a projekčný transform)
+            _basicEffect.World = Matrix.Identity; // Žiadna transformácia
+            _basicEffect.View = Matrix.CreateLookAt(
+                new Vector3(0, 0, 10),  // Kamera na pozícii (0,0,10)
+                Vector3.Zero,            // Pozeráme na stred scény
+                Vector3.Up               // "Hore" je os Y
+            );
+            _basicEffect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                MathHelper.PiOver4,
+                Instance.GraphicsDevice.Viewport.AspectRatio,
+                0.1f,
+                100f
+            );
+
+
+
+            List<Vector2> polygonPoints = new List<Vector2>
+                {
+                    new Vector2(100, 100),
+                    new Vector2(200, 50),
+                    new Vector2(300, 100),
+                    new Vector2(250, 200),
+                    new Vector2(150, 200)
+                };
+
+            Poly2Tri.Triangulation.Polygon.Polygon polygon = new Poly2Tri.Triangulation.Polygon.Polygon(polygonPoints.Select(p => new Poly2Tri.Triangulation.Polygon.PolygonPoint(p.X, p.Y)).ToList());
+
+            // Triangulácia polygonu pomocou Poly2Tri
+            P2T.Triangulate(polygon);
+
+            // Konverzia výsledných trojuholníkov na vertexy
+            _polygonVertices = polygon.Triangles.SelectMany(t => new[]
+            {
+                new VertexPositionColor(new Vector3((float)t.Points[0].X, (float)t.Points[0].Y, 0), Color.Red),
+                new VertexPositionColor(new Vector3((float)t.Points[1].X, (float)t.Points[1].Y, 0), Color.Green),
+                new VertexPositionColor(new Vector3((float)t.Points[2].X, (float)t.Points[2].Y, 0), Color.Blue)
+            }).ToArray();
+
+            _indices = Enumerable.Range(0, _polygonVertices.Length).Select(i => (short)i).ToArray();
+
         }
 
         public void DrawPolygon(GameTime gameTime, BezierPolygon bezierPolygon)
         {
             // TODO
-            //bezierPolygon.DrawFilled(Instance._spriteBatch, BasicEffect.);
+            // bezierPolygon.DrawFilled(Instance.GraphicsDevice, _basicEffect);
+            bezierPolygon.Curves.ForEach(curve =>
+            {
+                curve.Draw(Instance._spriteBatch);
+                curve.DrawPoints(Instance._spriteBatch, pixelTexture);
+                curve.DrawControlPoints(Instance._spriteBatch, pixelTexture);
+            });
         }
 
         public override void RegisterToolGroups(RightToolsPanelWrapper rightToolsPanelWrapper)
@@ -41,43 +99,19 @@ namespace Avalonia_Monogame_Dock_Template.Monogame.Plugins
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            //Debug.WriteLine($"Draw task: {EnginePluginName}");
-            var v1 = new Verticle { position = new Vector2(100, 100) };
-            var v2 = new Verticle { position = new Vector2(400, 100) };
-            var v3 = new Verticle { position = new Vector2(400, 400) };
-            var v4 = new Verticle { position = new Vector2(100, 400) };
+            // Instance._spriteBatch.DrawRectangle(testBezierPolygon.GetBoundingBox(), Color.Yellow);
+            // bezierPolygon.Draw(Instance._spriteBatch, pixelTexture, Color.Red);
+            _basicEffect.CurrentTechnique.Passes[0].Apply();
 
-            var c1 = new Verticle { position = new Vector2(120, 120) };
-            var c11 = new Verticle { position = new Vector2(80, 80) };
-            var c2 = new Verticle { position = new Vector2(380, 120) };
-            var c22 = new Verticle { position = new Vector2(420, 120) };
-            var c3 = new Verticle { position = new Vector2(380, 380) };
-            var c33 = new Verticle { position = new Vector2(420, 420) };
-            var c4 = new Verticle { position = new Vector2(80, 380) };
-            var c44 = new Verticle { position = new Vector2(120, 420) };
-
-            var curve1 = new BezierCurve(v1, c1, c2, v2);
-            var curve2 = new BezierCurve(v2, c22, c3, v3);
-            var curve3 = new BezierCurve(v3, c33, c4, v4);
-            var curve4 = new BezierCurve(v4, c44, c11, v1); // Uzatvorenie
-
-            curve1.Draw(Instance._spriteBatch);
-            curve1.DrawPoints(Instance._spriteBatch, pixelTexture);
-            curve1.DrawControlPoints(Instance._spriteBatch, pixelTexture);
-            curve2.Draw(Instance._spriteBatch);
-            curve2.DrawPoints(Instance._spriteBatch, pixelTexture);
-            curve2.DrawControlPoints(Instance._spriteBatch, pixelTexture);
-            curve3.Draw(Instance._spriteBatch);
-            curve3.DrawPoints(Instance._spriteBatch, pixelTexture);
-            curve3.DrawControlPoints(Instance._spriteBatch, pixelTexture);
-            curve4.Draw(Instance._spriteBatch);
-            curve4.DrawPoints(Instance._spriteBatch, pixelTexture);
-            curve4.DrawControlPoints(Instance._spriteBatch, pixelTexture);
-
-            var bezierPolygon = new BezierPolygon(new List<BezierCurve> { curve1, curve2, curve3, curve4 });
-
-            Instance._spriteBatch.DrawRectangle(bezierPolygon.GetBoundingBox(), Color.Yellow);
-            //bezierPolygon.Draw(Instance._spriteBatch, pixelTexture, Color.Red);
+            Instance.GraphicsDevice.DrawUserIndexedPrimitives(
+                PrimitiveType.TriangleList,
+                _polygonVertices,
+                0,
+                _polygonVertices.Length,
+                _indices,
+                0,
+                _polygonVertices.Length / 3
+            );
         }
 
         public override void RegisterButtonInGroup(RightToolsPanelWrapper rightToolsPanelWrapper)

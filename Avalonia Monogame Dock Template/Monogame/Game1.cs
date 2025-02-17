@@ -54,8 +54,8 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         // disable 60fps
-         IsFixedTimeStep = false;
-         _graphics.SynchronizeWithVerticalRetrace = false;
+        //  IsFixedTimeStep = false;
+        //  _graphics.SynchronizeWithVerticalRetrace = false;
 
         // engine init
         _appEngine = new AppEngine(this);

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -11,6 +9,8 @@ namespace Avalonia_Monogame_Dock_Template.Models
 {
     public class BezierCurve
     {
+        // Unikátny identifikátor polygonu
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public Verticle Start { get; set; }
         public Verticle End { get; set; }
         public Verticle Control1 { get; set; }
@@ -18,6 +18,14 @@ namespace Avalonia_Monogame_Dock_Template.Models
         public int Segments { get; set; } = 20;
         public float StartPercent { get; set; } = 0;
         public float EndPercent { get; set; } = 1;
+        private List<Vector2>? _cachedPoints;
+
+        private void InvalidateCache()
+        {
+            _cachedPoints = null;
+        }
+
+        public BezierCurve() { }
 
         public BezierCurve(Verticle start, Verticle control1, Verticle control2, Verticle end, int segments = 20, float startPercent = 0, float endPercent = 1)
         {
@@ -48,6 +56,10 @@ namespace Avalonia_Monogame_Dock_Template.Models
         // Generuje body na krivke (rozlíšenie = počet bodov)
         public List<Vector2> GetPoints()
         {
+            if (_cachedPoints != null)
+            {
+                return _cachedPoints;
+            }
             List<Vector2> points = new List<Vector2>();
             StartPercent = MathHelper.Clamp(StartPercent, 0f, 1f);
             EndPercent = MathHelper.Clamp(EndPercent, 0f, 1f);
@@ -67,6 +79,7 @@ namespace Avalonia_Monogame_Dock_Template.Models
 
                 points.Add(point);
             }
+            _cachedPoints = points;
             return points;
         }
 
@@ -89,6 +102,7 @@ namespace Avalonia_Monogame_Dock_Template.Models
             End.position += delta;
             Control1.position += delta;
             Control2.position += delta;
+            InvalidateCache();
         }
 
         public void Draw(SpriteBatch spriteBatch)

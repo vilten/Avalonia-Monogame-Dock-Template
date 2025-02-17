@@ -1,6 +1,6 @@
 name: untitled
 createdAt: 2025-02-09T00:59:24.0000000
-lastModified: 2025-02-17T02:57:23.3119343Z
+lastModified: 2025-02-17T09:22:18.4667887Z
 version: 1.0.0
 author: Unknown
 description: Project description...
@@ -41,14 +41,103 @@ layers:
       color: '#FFFFFFFF'
     polygons: []
   - id: 7e2b1c19-2510-450d-b25f-d0af640bd294
-    layerItemType: Point
-    verticles:
-    - id: 06f380bb-2e9a-4c31-b466-93f13e780e7c
-      position: 924219 41233544
-      opacity: 1
-      size: 10
-      color: '#FFFFFFFF'
-    polygons: []
+    layerItemType: Polygon
+    verticles: []
+    polygons:
+    - id: 519728e2-4b4f-4c28-b458-1805b79da91d
+      curves:
+      - id: b7207ce8-164d-41eb-bc34-46720228abd7
+        start: &o7
+          id: 70629916-7163-4350-8c08-260514ceaf6c
+          position: 100 100
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        end: &o4
+          id: 5bb2076d-a6ff-45e2-bd63-51911412e4fb
+          position: 400 100
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control1:
+          id: 58eb38e1-622c-4c29-a690-32d71feb871e
+          position: 120 120
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control2:
+          id: 3cb1d277-c1df-439f-89e2-ecb1acbf872d
+          position: 380 120
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        segments: 20
+        startPercent: 0
+        endPercent: 1
+      - id: 0daaf635-4052-457f-a707-12d4edb4414d
+        start: *o4
+        end: &o5
+          id: b90fe175-f322-4851-b4bb-f3b0eaa49230
+          position: 400 400
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control1:
+          id: 11b5d474-7e1b-49bd-b643-0df41b947abf
+          position: 420 120
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control2:
+          id: 55c582f0-eaae-41cc-bae6-239b5b5f4378
+          position: 380 380
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        segments: 20
+        startPercent: 0
+        endPercent: 1
+      - id: 75041a9f-a6e4-4ebc-b833-eadf089bcf08
+        start: *o5
+        end: &o6
+          id: c6a8a979-2157-42ee-9386-12df8ce47f5d
+          position: 100 400
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control1:
+          id: bbdb8ff6-8dac-4054-83ae-03d1c4730265
+          position: 420 420
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control2:
+          id: df73bc26-36d0-49bb-82ea-eb2835bd4328
+          position: 80 380
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        segments: 20
+        startPercent: 0
+        endPercent: 1
+      - id: 9d91a7b8-4ade-4204-9f4a-83c225be75bb
+        start: *o6
+        end: *o7
+        control1:
+          id: a2beeedd-9dd0-4657-989d-c733909cca10
+          position: 120 420
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        control2:
+          id: 1bb33176-755e-4016-a2e2-aade7bd47b47
+          position: 80 80
+          opacity: 1
+          size: 1
+          color: '#FFFFFFFF'
+        segments: 20
+        startPercent: 0
+        endPercent: 1
   - id: 95834f54-ad0f-43b0-9070-552c0191e77a
     layerItemType: Point
     verticles:

@@ -63,12 +63,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                 foreach (var loadContent in _loadContentCalls[Instance.EngineMode])
                 {
                     loadContent(_spriteBatch);
-                };
+                }
+            ;
             if (_loadContentCalls.ContainsKey(EngineMode.all))
                 foreach (var loadContent in _loadContentCalls[EngineMode.all])
                 {
                     loadContent(_spriteBatch);
-                };
+                }
+            ;
 
         }
 
@@ -78,12 +80,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                 foreach (var update in _updateContentCalls[Instance.EngineMode])
                 {
                     update(gameTime);
-                };
+                }
+            ;
             if (_updateContentCalls.ContainsKey(EngineMode.all))
                 foreach (var update in _updateContentCalls[EngineMode.all])
                 {
                     update(gameTime);
-                };
+                }
+            ;
         }
 
         internal void Draw(GameTime gameTime)
@@ -105,12 +109,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                                             foreach (var drawVerticle in _drawVerticleCalls[Instance.EngineMode])
                                             {
                                                 drawVerticle(gameTime, layerItem.Verticles[i]);
-                                            };
+                                            }
+                                        ;
                                         if (_drawVerticleCalls.ContainsKey(EngineMode.all))
                                             foreach (var drawVerticle in _drawVerticleCalls[EngineMode.all])
                                             {
                                                 drawVerticle(gameTime, layerItem.Verticles[i]);
-                                            };
+                                            }
+                                        ;
                                     }
                                     break;
                                 case LayerItemType.Polygon:
@@ -135,12 +141,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                 foreach (var draw in _drawContentCalls[Instance.EngineMode])
                 {
                     draw(gameTime);
-                };
+                }
+            ;
             if (_drawContentCalls.ContainsKey(EngineMode.all))
                 foreach (var draw in _drawContentCalls[EngineMode.all])
                 {
                     draw(gameTime);
-                };
+                }
+            ;
 
         }
 
@@ -151,12 +159,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                 foreach (var unloadContent in _unloadContentCalls[Instance.EngineMode])
                 {
                     unloadContent();
-                };
+                }
+            ;
             if (_unloadContentCalls.ContainsKey(EngineMode.all))
                 foreach (var unloadContent in _unloadContentCalls[EngineMode.all])
                 {
                     unloadContent();
-                };
+                }
+            ;
         }
 
         internal void RegisterLoadContent(EngineMode mode, Action<SpriteBatch> loadContent)
