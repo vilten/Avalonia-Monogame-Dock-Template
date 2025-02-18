@@ -105,14 +105,14 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                                 case LayerItemType.Point:
                                     for (int i = 0; i < layerItem.Verticles.Count; i++)
                                     {
-                                        if (_drawVerticleCalls.ContainsKey(Instance.EngineMode))
-                                            foreach (var drawVerticle in _drawVerticleCalls[Instance.EngineMode])
+                                        if (_drawVerticleCalls.ContainsKey(EngineMode.all))
+                                            foreach (var drawVerticle in _drawVerticleCalls[EngineMode.all])
                                             {
                                                 drawVerticle(gameTime, layerItem.Verticles[i]);
                                             }
                                         ;
-                                        if (_drawVerticleCalls.ContainsKey(EngineMode.all))
-                                            foreach (var drawVerticle in _drawVerticleCalls[EngineMode.all])
+                                        if (_drawVerticleCalls.ContainsKey(Instance.EngineMode))
+                                            foreach (var drawVerticle in _drawVerticleCalls[Instance.EngineMode])
                                             {
                                                 drawVerticle(gameTime, layerItem.Verticles[i]);
                                             }
@@ -122,12 +122,12 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
                                 case LayerItemType.Polygon:
                                     for (int i = 0; i < layerItem.Polygons.Count; i++)
                                     {
-                                        if (_drawPolygonCalls.ContainsKey(Instance.EngineMode))
+                                        if (_drawPolygonCalls.ContainsKey(EngineMode.all))
                                             foreach (var drawPolygon in _drawPolygonCalls[Instance.EngineMode])
                                             {
                                                 drawPolygon(gameTime, layerItem.Polygons[i]);
                                             }
-                                        if (_drawPolygonCalls.ContainsKey(EngineMode.all))
+                                        if (_drawPolygonCalls.ContainsKey(Instance.EngineMode))
                                             foreach (var drawPolygon in _drawPolygonCalls[Instance.EngineMode])
                                             {
                                                 drawPolygon(gameTime, layerItem.Polygons[i]);

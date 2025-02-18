@@ -117,7 +117,10 @@ public class Game1 : Game
         _avaloniaRenderer.Begin();
         _graphics.GraphicsDevice.Clear(Color.SlateGray);
 
-        _spriteBatch.Begin(SpriteSortMode.Immediate);
+        try
+        {
+            _spriteBatch.Begin(SpriteSortMode.Immediate);
+        } catch { }
         base.Draw(gameTime);
         AppEngine.Draw(gameTime);
         _spriteBatch.End();

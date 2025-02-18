@@ -85,7 +85,11 @@ namespace Avalonia_Monogame_Dock_Template.Monogame
             _device.SetRenderTargets(_previousRenderTargets);
             _device.Clear(ClearColor);
 
-            _spriteBatch.Begin();
+            try
+            {
+                _spriteBatch.Begin();
+            }
+            catch { }
             _spriteBatch.Draw(_renderTarget, position, null, Microsoft.Xna.Framework.Color.White, 0, position, 1f, SpriteEffects.None, 0);
             _spriteBatch.End();
         }
